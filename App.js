@@ -13,7 +13,7 @@ import DetailsScreen from "./src/screens/DetailScreen";
 import CustomSideMenu from "./src/screens/CustomSideMenu";
 import TestPage from "./src/screens/TestPage";
 import Login from "./src/screens/LoginPage";
-
+import { PaperProvider } from "react-native-paper";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,14 +47,14 @@ const BottomTabNavigators = () => {
       />
 
       <Tab.Screen
-        name="Favorite"
+        name="Cart"
         component={FavoriteScreen}
         options={{
-          tabBarLabel: "Favorite",
+          tabBarLabel: "Cart",
           // tabBarShowLabel: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "heart" : "heart-outline"}
+              name={focused ? "cart" : "cart-outline"}
               size={focused ? 25 : 22}
               color={focused ? "#A52A2A" : "grey"}
             />
@@ -129,6 +129,7 @@ const DrawerNavigator = () => {
 
 export default function App() {
   return (
+    <PaperProvider>
     <NavigationContainer>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
       <Stack.Navigator screenOptions={{ header: () => null }}>
@@ -146,6 +147,7 @@ export default function App() {
         <Stack.Screen name="TestRedirect" component={Login} />
       </Stack.Navigator>
     </NavigationContainer>
+    </PaperProvider>
   );
 }
 

@@ -4,34 +4,25 @@ import COLORS from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { RECIPES } from "../../database/recipes";
 import FavoriteItem from "../components/FavoriteItem";
 
 const FavoriteScreen = ({ navigation }) => {
   const [favData, setFavData] = useState([]);
   const [showClearAll, setShowClearAll] = useState(false);
   const isFocused = useIsFocused();
-
-  let recipeFav;
-  if (favData != null) {
-    recipeFav = RECIPES.filter((item) => favData.includes(item.id));
-  } else {
-    recipeFav = [];
-  }
-
   useEffect(() => {
+    if(isFocused===true)
     getFromStorage();
   }, [isFocused]);
 
   const getFromStorage = async () => {
-    const storageData = await AsyncStorage.getItem("favorite");
+    const storageData = await AsyncStorage.getItem("cart");
     setFavData(storageData != null ? JSON.parse(storageData) : []);
-    console.log(JSON.parse(storageData));
     setShowClearAll(storageData != null && JSON.parse(storageData).length > 1);
   };
 
   const removeAllStorage = async () => {
-    Alert.alert("Are you sure?", "You really want to remove all your favorite collection?", [
+    Alert.alert("Are you sure?", "You really want to remove all your meals in cart?", [
       {
         text: "No",
         onPress: () => {},
@@ -49,15 +40,15 @@ const FavoriteScreen = ({ navigation }) => {
   };
 
   const removeDataFromStorage = async (id) => {
-    const list = favData.filter((item) => item !== id);
-    await AsyncStorage.setItem("favorite", JSON.stringify(list));
+    const list = favData.filter((item) => item.id !== id);
+    await AsyncStorage.setItem("cart", JSON.stringify(list));
     setFavData(list);
     setShowClearAll(list.length > 1);
   };
 
   return (
     <ScrollView style={styles.container}>
-      {recipeFav.length !== 0 ? (
+      {favData.length !== 0 ? (
         <View>
           <View style={styles.textHeaderContainer}>
             <Text style={styles.textHeader}>Favorite Collection</Text>
@@ -74,7 +65,7 @@ const FavoriteScreen = ({ navigation }) => {
 
           <View style={styles.cardContainer}>
             <FlatList
-              data={recipeFav}
+              data={favData}
               showsVerticalScrollIndicator={false}
               columnWrapperStyle={{ justifyContent: "space-between" }}
               scrollEnabled={false}
@@ -89,7 +80,7 @@ const FavoriteScreen = ({ navigation }) => {
       ) : (
         <View style={styles.emptyContainer}>
           <Image source={require("../../assets/images/empty-box.png")} style={{ width: 250, height: 250 }}/>
-          <Text style={styles.textEmpty}>Your favorite is empty</Text>
+          <Text style={styles.textEmpty}>Your cart is empty</Text>
         </View>
       )}
     </ScrollView>

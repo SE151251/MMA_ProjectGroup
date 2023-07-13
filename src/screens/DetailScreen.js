@@ -7,7 +7,10 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   FlatList,
+  TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
+import { Button, Chip } from "react-native-paper";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
@@ -16,60 +19,81 @@ import {
   MaterialCommunityIcons,
   AntDesign,
 } from "@expo/vector-icons";
+import HTML from "react-native-render-html";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
 
 const DetailsScreen = ({ navigation, route }) => {
   const [scaleValue, setScaleValue] = useState(new Animated.Value(1));
-  const [favData, setFavData] = useState([]);
+  const [cartData, setCartData] = useState([]);
   const [dataFetch, setDataFetch] = useState();
-  const data = route.params;
-  console.log(data);
+  const [contentWidth, setContentWidth] = useState(0);
+  const windowWidth = useWindowDimensions().width;
   useEffect(() => {
-    // getFromStorage();
+    setContentWidth(windowWidth);
+  }, [windowWidth]);
+  const data = route.params;
+  useEffect(() => {
     const fetchListMealsActive = async () => {
-      try {
-        console.log(
-          `https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal/${route.params}`
-        );
+      try { 
         const data = await axios.get(
           `https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal/${route.params}`
         );
-        console.log(data.data);
         setDataFetch(data.data);
-        // const newdata = JSON.parse(data)
       } catch (error) {
         console.log(error.response.data);
       }
     };
+    const getFromStorage = async () => {
+      const data = await AsyncStorage.getItem("cart");
+      setCartData(data != null ? JSON.parse(data) : []);
+      };
     fetchListMealsActive();
+    getFromStorage();
   }, []);
 
-  const getFromStorage = async () => {
-    const data = await AsyncStorage.getItem("favorite");
-    setFavData(data != null ? JSON.parse(data) : []);
-  };
-
   const setDataToStorage = async () => {
-    let list;
-    if (favData == []) {
-      list = [data.id];
-      await AsyncStorage.setItem("favorite", JSON.stringify(list));
+    let list = [];
+    if (cartData.length === 0) {
+        console.log("k có item");
+      list.push({
+        id: dataFetch.id,
+        description: dataFetch.description,
+        price: dataFetch.price,
+        mealImages: dataFetch.mealImages[0].source,
+        quantity: 1,
+      });
+      console.log("list new:", list);
+      await AsyncStorage.setItem("cart", JSON.stringify(list));
+      return;
     } else {
-      list = [...favData, data.id];
-      await AsyncStorage.setItem("favorite", JSON.stringify(list));
+        console.log("có item");
+      const foundItem = cartData.find((item) => item.id === dataFetch.id);
+      if (foundItem) {  
+        foundItem.quantity += 1;
+        list = [
+            ...cartData,
+          ];
+          console.log("list update quantity:", list);   
+      }
+      else{
+        list = [
+            ...cartData,
+            {
+              id: dataFetch.id,
+              description: dataFetch.description,
+              price: dataFetch.price,
+              mealImages: dataFetch.mealImages[0].source,
+              quantity: 1
+            },
+          ];
+      }
+      console.log("list update new: ", list);
+      await AsyncStorage.setItem("cart", JSON.stringify(list));
     }
-    setFavData(list);
   };
-
-  const removeDataFromStorage = async () => {
-    const list = favData.filter((item) => item !== data.id);
-    await AsyncStorage.setItem("favorite", JSON.stringify(list));
-    setFavData(list);
-  };
-
   const changeFavorite = () => {
     Animated.timing(scaleValue, {
       toValue: 0.8,
@@ -82,14 +106,8 @@ const DetailsScreen = ({ navigation, route }) => {
         useNativeDriver: true,
       }).start();
     });
-
-    if (favData.includes(data.id)) {
-      removeDataFromStorage();
-    } else {
       setDataToStorage();
-    }
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -100,27 +118,15 @@ const DetailsScreen = ({ navigation, route }) => {
           onPress={() => navigation.goBack()}
         />
         <TouchableWithoutFeedback onPress={changeFavorite}>
-                    <Animated.View style={[{ transform: [{ scale: scaleValue }] }]}>
-                        {/* {favData.includes(data.id) ? (
-                            <MaterialCommunityIcons
-                                name="cards-heart"
-                                size={38}
-                                color="#ff007f"
-                            />
-                        ) : (
-                            <MaterialCommunityIcons
-                                name="cards-heart-outline"
-                                size={38}
-                                color="grey"
-                            />
-                        )} */}
-                          <FontAwesome5 
-                        style={{ marginLeft: 2.5, marginRight: 5 }} 
-                        name="cart-plus" 
-                        size={24} 
-                        color="black" />
-                    </Animated.View>
-                </TouchableWithoutFeedback>
+          <Animated.View style={[{ transform: [{ scale: scaleValue }] }]}>
+            <FontAwesome5
+              style={{ marginLeft: 2.5, marginRight: 5 }}
+              name="cart-plus"
+              size={24}
+              color="black"
+            />
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </View>
       {dataFetch && (
         <>
@@ -132,94 +138,55 @@ const DetailsScreen = ({ navigation, route }) => {
           </View>
           <View style={styles.detailContainer}>
             <View style={styles.detailHeader}>
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: "bold",
-                  flex: 4,
-                  marginLeft: 20,
-                }}
-              >
-                {dataFetch.description}
-              </Text>
-              <View style={styles.startTag}>
-                <AntDesign
-                  style={styles.iconStar}
-                  name="star"
-                  size={14}
-                  color="#fff700"
-                />
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    color: COLORS.white,
-                    fontWeight: "bold",
-                    fontSize: 16,
-                  }}
-                >
-                  {dataFetch.status}
-                </Text>
-              </View>
+              <HTML
+                baseStyle={{ fontSize: "18px", fontWeight: 700 }}
+                contentWidth={contentWidth}
+                source={{ html: dataFetch.description }}
+              />
             </View>
+            <Chip
+              style={{ width: 200, marginLeft: 20 }}
+              icon="cash-multiple"
+              onPress={() => console.log("Pressed")}
+            >
+              Price: {dataFetch.price} VNĐ
+            </Chip>
             <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: "bold",
-                  flex: 4,
-                  marginLeft: 20,
-                }}
-              >
-                {dataFetch.price}
-              </Text>
+              style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}
+            >
+              Products in meal
+            </Text>
             <ScrollView
               scrollEnabled={true}
               showsVerticalScrollIndicator={false}
               style={{ height: 300 }}
               contentInsetAdjustmentBehavior="automatic"
             >
-              <View style={{ flex: 1 }}>
-                <View style={styles.aboutContainer}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    Material
-                  </Text>
-                  <FlatList
-                    data={data.material}
-                    scrollEnabled={false}
-                    renderItem={({ item, index }) => (
-                      <Text
-                        style={{ color: "grey", marginTop: 5, fontSize: 15 }}
+              <View style={styles.aboutContainer}>
+                <FlatList
+                  data={dataFetch.productMeals}
+                  scrollEnabled={false}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity onPress={() => console.log("press")}>
+                      <View
+                        style={{
+                          borderWidth: 1,
+                          paddingHorizontal: 10,
+                          paddingVertical: 10,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          marginBottom: 10,
+                          borderRadius: 15,
+                        }}
                       >
-                        {index + 1} : {item}
-                      </Text>
-                    )}
-                  />
-                </View>
-                <View style={styles.aboutContainer}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    Products in Meal
-                  </Text>
-                  <FlatList
-                    data={dataFetch.productMeals}
-                    scrollEnabled={false}
-                    renderItem={({ item, index }) => (
-                      <View>
-                        <Text
-                          style={{ color: "grey", marginTop: 5, fontSize: 15 }}
-                        >
-                          {item.product.name}
-                        </Text>
-                        <Text
-                          style={{ color: "grey", marginTop: 5, fontSize: 15 }}
-                        >
-                          Price: {item.product.price}/1kg
-                        </Text>
                         <Image
                           style={{
                             // width: "100%",
-                            resizeMode:"cover",
-                            height: 110,
+                            resizeMode: "cover",
+                            height: 100,
+                            width: 100,
                             alignItems: "center",
-                            borderRadius: 20,
+                            borderRadius: 10,
                             shadowColor: "black",
                             shadowRadius: 3,
                             shadowOpacity: 0.8,
@@ -227,12 +194,36 @@ const DetailsScreen = ({ navigation, route }) => {
                           }}
                           source={{ uri: item.product.productImages[0].source }}
                         />
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            marginLeft: 20,
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Text style={{ marginTop: 5, fontSize: 15 }}>
+                            {item.product.name}
+                          </Text>
+                          <Text style={{ marginTop: 5, fontSize: 15 }}>
+                            Price: {item.product.price} VNĐ/1kg
+                          </Text>
+                        </View>
                       </View>
-                    )}
-                  />
-                </View>
+                    </TouchableOpacity>
+                  )}
+                />
               </View>
+              {/* </View> */}
             </ScrollView>
+            <Button
+              mode="contained-tonal"
+              style={{ borderRadius: 20 }}
+              buttonColor="#FF7F50"
+              onPress={changeFavorite}
+              icon="cart-plus"
+            >
+              Add to cart
+            </Button>
           </View>
         </>
       )}
@@ -274,10 +265,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   detailHeader: {
-    marginTop: 14,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    // marginTop: 14,
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignItems: "center",
+    marginTop: 20,
+    marginLeft: 20,
   },
   startTag: {
     flex: 1,
