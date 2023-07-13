@@ -1,13 +1,22 @@
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TouchableWithoutFeedback, Animated, } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, TouchableWithoutFeedback, Animated, useWindowDimensions } from "react-native";
+import React, { useEffect, useState } from "react";
 import COLORS from "../constants/colors";
 import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import HTML from 'react-native-render-html';
+import { FontAwesome5 } from '@expo/vector-icons'; 
+
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
-const Card = ({ data, navigation, favData, setFavData }) => {
+const Card = ({ data, navigation, favData, setFavData, dataFetch }) => {
     const [scaleValue, setScaleValue] = useState(new Animated.Value(1));
+    const [contentWidth, setContentWidth] = useState(0);
+  const windowWidth = useWindowDimensions().width;
+  useEffect(() => {
+    // Cập nhật giá trị contentWidth khi windowWidth thay đổi
+    setContentWidth(windowWidth);
+  }, [windowWidth]);
 
     const setDataToStorage = async () => {
         let list;
@@ -49,21 +58,28 @@ const Card = ({ data, navigation, favData, setFavData }) => {
     };
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("Details", data)}>
+        <TouchableOpacity onPress={() => navigation.navigate("Details", data.id)}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.imageItem} source={{ uri: data.imageUrl }} />
+                    <Image style={styles.imageItem} source={{ uri: data.mealImages[0].source }} />
                 </View>
-                <Text numberOfLines={1} style={styles.nameItem}>
-                    {data.name}
-                </Text>
+                {/* <Text numberOfLines={1} style={styles.nameItem}>
+                    {data.description}
+                </Text> */}
+                
+                <HTML contentWidth={contentWidth} source={{ html: data.description }} />
                 <Text style={styles.time} numberOfLines={1}>
-                    {data.time}
+                   {data.price} VNĐ
                 </Text>
                 <View style={styles.infoContainer}>
                     <TouchableWithoutFeedback onPress={changeFavorite}>
                         <Animated.View style={[{ transform: [{ scale: scaleValue }] }]}>
-                            {favData.includes(data.id) ? (
+                        <FontAwesome5 
+                        style={[styles.iconStar, { marginLeft: 2.5 }]} 
+                        name="cart-plus" 
+                        size={24} 
+                        color="black" />
+                            {/* {favData.includes(data.id) ? (
                                 <AntDesign
                                     style={[styles.iconStar, { marginLeft: 2.5 }]}
                                     name="heart"
@@ -77,7 +93,7 @@ const Card = ({ data, navigation, favData, setFavData }) => {
                                     size={22}
                                     color="#ff007f"
                                 />
-                            )}
+                            )} */}
                         </Animated.View>
                     </TouchableWithoutFeedback>
                     <View style={styles.ratingContainer}>
@@ -87,7 +103,7 @@ const Card = ({ data, navigation, favData, setFavData }) => {
                             size={14}
                             color="#fff700"
                         />
-                        <Text style={styles.ratingText}>{data.rating}</Text>
+                        <Text style={styles.ratingText}>{data.status}</Text>
                     </View>
                 </View>
             </View>

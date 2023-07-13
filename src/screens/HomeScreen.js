@@ -9,16 +9,29 @@ import { useIsFocused } from "@react-navigation/native";
 import { CATEGORIES } from "../../database/categories";
 import { RECIPES } from "../../database/recipes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import axios from "axios";
 const HomeScreen = ({ navigation }) => {
     const [recipes, SetRecipe] = useState(RECIPES);
     const [categoryIndex, setCategoryIndex] = useState(CATEGORIES[0].id);
     const [searchQuery, setSearchQuery] = useState("");
     const [favData, setFavData] = useState([]);
+    const [dataFetch, setDataFetch] = useState();
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        getFromStorage();
+        //getFromStorage();
+        const fetchListMealsActive = async () => {
+            try {
+                const data = await axios.get("https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal")
+                // console.log(data.data[0].description);
+                setDataFetch(data.data)
+                // const newdata = JSON.parse(data)                       
+            } catch (error) {
+               console.log(error.response.data); 
+            }
+           
+        };
+    fetchListMealsActive()
     }, [isFocused]);
 
     const updateFavData = (list) => {
@@ -47,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Text style={{ fontSize: 40, fontWeight: "bold", color: COLORS.orange, }}>Recipe Cooking</Text>
+                <Text style={{ fontSize: 40, fontWeight: "bold", color: COLORS.orange, }}>BMOS</Text>
             </View>
 
             <View style={styles.searchContainer}>
@@ -61,29 +74,31 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             </View>
 
-            <CategoryList
+            {/* <CategoryList
                 categories={CATEGORIES}
                 categoryIndex={categoryIndex}
                 setCategoryIndex={selectCategory}
-            />
-            <FlatList
+            /> */}
+            {dataFetch && <FlatList
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={{
                     justifyContent: "space-between",
                 }}
                 numColumns={2}
-                data={recipes.filter((item) =>
-                    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+                data={dataFetch.filter((item) =>
+                    item.description.toLowerCase().includes(searchQuery.toLowerCase())
                 )}
                 renderItem={({ item }) => (
                     <Card
                         navigation={navigation}
                         data={item}
+                        dataFetch={dataFetch}
                         favData={favData}
                         setFavData={setFavData}
                     />
                 )}
             />
+        }
         </SafeAreaView>
     );
 };
