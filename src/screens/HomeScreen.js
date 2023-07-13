@@ -19,7 +19,7 @@ const HomeScreen = ({ navigation }) => {
         const fetchListMealsActive = async () => {
             try {
                 const data = await axios.get("https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal")
-                setDataFetch(data.data)                                       
+                setDataFetch(data.data)                                     
             } catch (error) {
                console.log(error.response.data); 
             }
@@ -62,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 numColumns={2}
                 data={dataFetch.filter((item) =>
-                    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+                    item.title.toLowerCase().includes(searchQuery.toLowerCase())
                 )}
                 renderItem={({ item }) => (
                     <Card
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         backgroundColor: COLORS.lightOrange,
+        
     },
     header: {
         flexDirection: "row",

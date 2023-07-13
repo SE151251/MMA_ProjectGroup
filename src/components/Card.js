@@ -33,7 +33,7 @@ const Card = ({ data, navigation, cartData }) => {
         console.log("k có item");
       list.push({
         id: data.id,
-        description: data.description,
+        title: data.title,
         price: data.price,
         mealImages: data.mealImages[0].source,
         quantity: 1,
@@ -56,7 +56,7 @@ const Card = ({ data, navigation, cartData }) => {
             ...cartData,
             {
               id: data.id,
-              description: data.description,
+              title: data.title,
               price: data.price,
               mealImages: data.mealImages[0].source,
               quantity: 1
@@ -93,7 +93,7 @@ const Card = ({ data, navigation, cartData }) => {
             source={{ uri: data.mealImages[0].source }}
           />
         </View>
-        <HTML contentWidth={contentWidth} source={{ html: data.description }} />
+        <HTML contentWidth={contentWidth} source={{ html: data.title }} />
         <Text style={styles.time} numberOfLines={1}>
           {data.price} VNĐ
         </Text>
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.lightGray,
     width,
+    height:250,
     marginHorizontal: 2,
     borderRadius: 10,
     marginVertical: 10,

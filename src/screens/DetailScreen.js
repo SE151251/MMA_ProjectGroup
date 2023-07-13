@@ -60,7 +60,7 @@ const DetailsScreen = ({ navigation, route }) => {
         console.log("k có item");
       list.push({
         id: dataFetch.id,
-        description: dataFetch.description,
+        title: dataFetch.title,
         price: dataFetch.price,
         mealImages: dataFetch.mealImages[0].source,
         quantity: 1,
@@ -83,7 +83,7 @@ const DetailsScreen = ({ navigation, route }) => {
             ...cartData,
             {
               id: dataFetch.id,
-              description: dataFetch.description,
+              title: dataFetch.title,
               price: dataFetch.price,
               mealImages: dataFetch.mealImages[0].source,
               quantity: 1
@@ -141,7 +141,7 @@ const DetailsScreen = ({ navigation, route }) => {
               <HTML
                 baseStyle={{ fontSize: "18px", fontWeight: 700 }}
                 contentWidth={contentWidth}
-                source={{ html: dataFetch.description }}
+                source={{ html: dataFetch.title }}
               />
             </View>
             <Chip

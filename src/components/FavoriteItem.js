@@ -14,6 +14,7 @@ import COLORS from "../constants/colors";
 const width = Dimensions.get("screen").width / 2 - 30;
 
 const FavoriteItem = ({ data, navigation, removeDataFromStorage }) => {
+    console.log(data);
   const [contentWidth, setContentWidth] = useState(0);
   const windowWidth = useWindowDimensions().width;
   useEffect(() => {
@@ -32,7 +33,7 @@ const FavoriteItem = ({ data, navigation, removeDataFromStorage }) => {
           <HTML
             baseStyle={{ color: "white", fontSize: 16, fontWeight: "bold" }}
             contentWidth={contentWidth}
-            source={{ html: data.description }}
+            source={{ html: data.title }}
           />
           <Text style={styles.text}>Single priece: {data.price} VNĐ</Text>
           <Text style={styles.text}>Quantity: {data.quantity}</Text>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     borderRadius: 10,
     marginVertical: 20,
-    overflow: "hidden",
+    // overflow: "hidden",
     width: 350,
   },
   imageItem: {
