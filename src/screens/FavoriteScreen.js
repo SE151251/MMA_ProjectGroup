@@ -9,6 +9,7 @@ import { Button, Card } from 'react-native-paper';
 const FavoriteScreen = ({ navigation }) => {
   const [favData, setFavData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalMeal, setTotalMeal] = useState(0);
   const [showClearAll, setShowClearAll] = useState(false);
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -19,17 +20,18 @@ const FavoriteScreen = ({ navigation }) => {
   const getFromStorage = async () => {
     const storageData = await AsyncStorage.getItem("cart");
     setFavData(storageData != null ? JSON.parse(storageData) : []);
-    console.log("cart: ",JSON.parse(storageData));
     const dataParse = JSON.parse(storageData)
     let totalPriceInCart = 0;
+    let totalMealInCart = 0
     if(dataParse){
       for(let i = 0; i < dataParse.length; i++){
         totalPriceInCart = totalPriceInCart + (dataParse[i].price * dataParse[i].quantity)
+        totalMealInCart = totalMealInCart + dataParse[i].quantity
       }
     }
     
-    console.log(totalPriceInCart);
     setTotalPrice(totalPriceInCart)
+    setTotalMeal(totalMealInCart)
     setShowClearAll(storageData != null && JSON.parse(storageData).length > 1);
   };
 
@@ -63,7 +65,7 @@ const FavoriteScreen = ({ navigation }) => {
       {favData.length !== 0 ? (
         <View>
           <View style={styles.textHeaderContainer}>
-            <Text style={styles.textHeader}>Favorite Collection</Text>
+            <Text style={styles.textHeader}>Your Cart</Text>
           </View>
 
           {showClearAll && (
@@ -88,14 +90,15 @@ const FavoriteScreen = ({ navigation }) => {
               )}
             />
           </View>
-          <Card style={{paddingBottom: 10, paddingTop: 10, marginBottom: 20}}>
+          <Card style={{paddingBottom: 10, paddingTop: 10, marginBottom: 20, marginLeft:20, marginRight:20}}>
     <Card.Content>
       <Text style={{textAlign:"center", fontSize:24, fontWeight:700}}>Overview</Text>
-      <Text>Total Meal: {favData.length}</Text>
+      <Text>Total Type Meal: {favData.length}</Text>
+      <Text>Total Meal: {totalMeal}</Text>
       <Text>Total Price: {totalPrice} VNĐ</Text>
     </Card.Content>
   </Card>
-  <Button icon="cart-check" mode="contained" onPress={() => console.log('Pressed')}>
+  <Button icon="cart-check" mode="contained" onPress={() => console.log('Pressed')} style={{position:"relative", bottom: 0}}>
     Checkout
   </Button>
         </View>

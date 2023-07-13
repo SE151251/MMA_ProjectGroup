@@ -93,7 +93,7 @@ const Card = ({ data, navigation, cartData }) => {
             source={{ uri: data.mealImages[0].source }}
           />
         </View>
-        <HTML contentWidth={contentWidth} source={{ html: data.title }} />
+        <HTML baseStyle={{height: 59, paddingTop: 5,}} contentWidth={contentWidth} source={{ html: data.title }} />
         <Text style={styles.time} numberOfLines={1}>
           {data.price} VNĐ
         </Text>

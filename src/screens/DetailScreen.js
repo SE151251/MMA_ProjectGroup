@@ -136,30 +136,35 @@ const DetailsScreen = ({ navigation, route }) => {
               source={{ uri: dataFetch.mealImages[0].source }}
             />
           </View>
-          <View style={styles.detailContainer}>
+          <ScrollView style={styles.detailContainer}>
             <View style={styles.detailHeader}>
-              <HTML
-                baseStyle={{ fontSize: "18px", fontWeight: 700 }}
-                contentWidth={contentWidth}
-                source={{ html: dataFetch.title }}
-              />
-            </View>
+            <Text
+              style={{ fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 20 }}
+            >
+              {dataFetch.title}
+            </Text>
             <Chip
-              style={{ width: 200, marginLeft: 20 }}
+              style={{ width: 200 }}
               icon="cash-multiple"
               onPress={() => console.log("Pressed")}
             >
               Price: {dataFetch.price} VNĐ
             </Chip>
             <Text
-              style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}
+              style={{ fontSize: 20, fontWeight: 500, marginTop: 20 }}
             >
-              Products in meal
+              Meal description:
             </Text>
-            <ScrollView
+              <HTML
+                baseStyle={{ fontSize: "18px", fontWeight: 700}}
+                contentWidth={contentWidth}
+                source={{ html: dataFetch.description }}
+              />
+            </View>                     
+            <View
               scrollEnabled={true}
               showsVerticalScrollIndicator={false}
-              style={{ height: 300 }}
+              // style={{ height: 300 }}
               contentInsetAdjustmentBehavior="automatic"
             >
               <View style={styles.aboutContainer}>
@@ -167,7 +172,7 @@ const DetailsScreen = ({ navigation, route }) => {
                   data={dataFetch.productMeals}
                   scrollEnabled={false}
                   renderItem={({ item, index }) => (
-                    <TouchableOpacity onPress={() => console.log("press")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", item.product.id)}>
                       <View
                         style={{
                           borderWidth: 1,
@@ -214,8 +219,10 @@ const DetailsScreen = ({ navigation, route }) => {
                 />
               </View>
               {/* </View> */}
-            </ScrollView>
-            <Button
+            </View>
+           
+          </ScrollView>
+          <Button
               mode="contained-tonal"
               style={{ borderRadius: 20 }}
               buttonColor="#FF7F50"
@@ -224,7 +231,6 @@ const DetailsScreen = ({ navigation, route }) => {
             >
               Add to cart
             </Button>
-          </View>
         </>
       )}
     </SafeAreaView>

@@ -14,6 +14,7 @@ import CustomSideMenu from "./src/screens/CustomSideMenu";
 import TestPage from "./src/screens/TestPage";
 import Login from "./src/screens/LoginPage";
 import { PaperProvider } from "react-native-paper";
+import ProductDetailScreen from "./src/screens/ProductDetailScreen";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -109,10 +110,10 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Test"
+        name="Login"
         component={TestPage}
         options={{
-          title: "Test",
+          title: "Login",
           headerTitle: "Test",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
@@ -143,8 +144,9 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="Login" component={TestPage} />
+        {/* <Stack.Screen name="Login" component={TestPage} /> */}
         <Stack.Screen name="TestRedirect" component={Login} />
+        <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </PaperProvider>

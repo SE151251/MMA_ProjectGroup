@@ -1,18 +1,32 @@
 import { StyleSheet, Text, View, Image, FlatList, ImageBackground, TouchableOpacity, } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { DrawerContentScrollView, DrawerItemList, } from "@react-navigation/drawer";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CustomSideMenu = (props) => {
-
+    const isFocused = useIsFocused()
+    const [dataUser, setDataUser] = useState({id: "001", name: "Dat", email:"dat@gmail.com", role:"Customer"})
+    console.log(dataUser);
+    useEffect(()=>{
+        const getFromStorage = async () => {
+            const storageData = await AsyncStorage.getItem("user_info");
+            setDataUser(storageData != null ? JSON.parse(storageData) : []);
+        }
+        getFromStorage()
+    },[isFocused])
     const bottomList = [
         { id: "1", icon: "information-circle-outline", title: "About Us" },
         { id: "2", icon: "exit-outline", title: "Logout" },
     ];
-
+    const handleLogout = async() =>{
+        await AsyncStorage.removeItem("user_info");
+        setDataUser({id: "001", name: "Dat", email:"dat@gmail.com", role:"Customer"})
+    }
     const Item = ({ item }) => {
         return (
-            <TouchableOpacity activeOpacity={0.5}>
+            <TouchableOpacity activeOpacity={0.5} onPress={handleLogout}>
                 <View style={styles.item}>
                     <Ionicons name={item.icon} size={20} color="black" />
                     <Text style={styles.textItem}>{item.title}</Text>
@@ -42,9 +56,9 @@ const CustomSideMenu = (props) => {
                             style={styles.profileImage}
                         />
                         <Text style={[styles.textProfile, { fontSize: 22 }]}>
-                            User
+                            {dataUser.name}
                         </Text>
-                        <Text style={[styles.textProfile]}>1xxx followers</Text>
+                        <Text style={[styles.textProfile]}>{dataUser.email}</Text>
                     </View>
                 </ImageBackground>
                 <View style={styles.itemContainer}>
