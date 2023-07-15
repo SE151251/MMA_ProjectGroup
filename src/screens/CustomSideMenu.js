@@ -8,7 +8,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const CustomSideMenu = (props) => {
     const isFocused = useIsFocused()
     const [dataUser, setDataUser] = useState({id: "001", name: "Dat", email:"dat@gmail.com", role:"Customer"})
-    console.log(dataUser);
     useEffect(()=>{
         const getFromStorage = async () => {
             const storageData = await AsyncStorage.getItem("user_info");

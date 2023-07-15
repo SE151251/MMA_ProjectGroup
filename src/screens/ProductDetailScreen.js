@@ -28,7 +28,6 @@ import { Chip } from "react-native-paper";
       setContentWidth(windowWidth);
     }, [windowWidth]);
     const data = route.params;
-    console.log(data);
     useEffect(() => {
       const fetchListMealsActive = async () => {
         try {

@@ -17,8 +17,8 @@ const TestPage = ({navigation}) => {
         email: email,
       passwordHash: password
     })
-    console.log(data.data);
     if(data.data.role === "Customer") {
+      console.log("zo");
       await AsyncStorage.setItem("access_token", data.data.accessToken)
       await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
       await AsyncStorage.setItem("user_info",JSON.stringify({
@@ -28,7 +28,6 @@ const TestPage = ({navigation}) => {
         role: data.data.role
       }))
       navigation.navigate("Home")
-      console.info('Login success')
     }
     
     } catch (error) {

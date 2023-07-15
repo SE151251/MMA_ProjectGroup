@@ -14,7 +14,6 @@ import COLORS from "../constants/colors";
 const width = Dimensions.get("screen").width / 2 - 30;
 
 const FavoriteItem = ({ data, navigation, removeDataFromStorage }) => {
-    console.log(data);
   const [contentWidth, setContentWidth] = useState(0);
   const windowWidth = useWindowDimensions().width;
   useEffect(() => {

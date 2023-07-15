@@ -15,6 +15,8 @@ import TestPage from "./src/screens/TestPage";
 import Login from "./src/screens/LoginPage";
 import { PaperProvider } from "react-native-paper";
 import ProductDetailScreen from "./src/screens/ProductDetailScreen";
+import HistoryOrder from "./src/screens/HistoryOrder";
+import OrderDetail from "./src/screens/OrderDetail";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,10 +66,11 @@ const BottomTabNavigators = () => {
         }}
       />
       <Tab.Screen
-        name="User"
-        component={Login}
+        name="History"
+        // component={Login}
+        component={HistoryOrder}
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: "History",
           // tabBarShowLabel: true,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
@@ -144,7 +147,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        {/* <Stack.Screen name="Login" component={TestPage} /> */}
+        <Stack.Screen name="OrderDetail" component={OrderDetail} />
         <Stack.Screen name="TestRedirect" component={Login} />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
       </Stack.Navigator>

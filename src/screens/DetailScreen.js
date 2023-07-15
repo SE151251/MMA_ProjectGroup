@@ -57,7 +57,6 @@ const DetailsScreen = ({ navigation, route }) => {
   const setDataToStorage = async () => {
     let list = [];
     if (cartData.length === 0) {
-        console.log("k có item");
       list.push({
         id: dataFetch.id,
         title: dataFetch.title,
@@ -65,18 +64,16 @@ const DetailsScreen = ({ navigation, route }) => {
         mealImages: dataFetch.mealImages[0].source,
         quantity: 1,
       });
-      console.log("list new:", list);
       await AsyncStorage.setItem("cart", JSON.stringify(list));
       return;
     } else {
-        console.log("có item");
+
       const foundItem = cartData.find((item) => item.id === dataFetch.id);
       if (foundItem) {  
         foundItem.quantity += 1;
         list = [
             ...cartData,
           ];
-          console.log("list update quantity:", list);   
       }
       else{
         list = [
@@ -90,7 +87,6 @@ const DetailsScreen = ({ navigation, route }) => {
             },
           ];
       }
-      console.log("list update new: ", list);
       await AsyncStorage.setItem("cart", JSON.stringify(list));
     }
   };

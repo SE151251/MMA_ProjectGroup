@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
         getFromStorage();
         const fetchListMealsActive = async () => {
             try {
-                const data = await axios.get("https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal")
+                const data = await axios.get('https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal')                              
                 setDataFetch(data.data)                                     
             } catch (error) {
                console.log(error.response.data); 
