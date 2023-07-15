@@ -4,7 +4,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Card } from "react-native-paper";
 import { format } from 'date-fns';
-const OrderDetail = ({route}) => {
+import { Ionicons } from "@expo/vector-icons";
+const OrderDetail = ({navigation,route}) => {
   const [data, setData] = useState();
   console.log(route.params);
   useEffect(() => {
@@ -38,13 +39,21 @@ const OrderDetail = ({route}) => {
   },[]);
   return (
     <View>
+            <View style={{marginBottom:30, marginTop:20}}>
+        <Ionicons
+          name="arrow-back-outline"
+          size={30}
+          color="black"
+          onPress={() => navigation.goBack()}
+        />
+        </View>
       <Text>Order Detail</Text>
+
       {data && <>
         <Card>
             <Card.Content>
             <Text>ID: {data.id}</Text> 
               <Text
-                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
               >
                 {`${format(new Date(data.orderedDate), 'dd/MM/yyyy')}`}
               </Text>
@@ -53,7 +62,7 @@ const OrderDetail = ({route}) => {
               <Text>Status: </Text>
             </Card.Content>
           </Card>  
-
+        <Text>List Meals:</Text>
           <FlatList
         data={data.orderDetails}
         keyExtractor={(item) => item.orderID}
@@ -75,8 +84,8 @@ const OrderDetail = ({route}) => {
                 {item.meal.title}
               </Text>
               <Text>{item.meal.quantity}</Text>            
-              <Text>Single price: {item.meal.unitPrices} </Text>
-              <Text>Total: {item.total} VNĐ</Text>
+              <Text>Single price: {item.meal.price} </Text>
+              <Text>Total: {item.unitPrices} VNĐ</Text>
             </Card.Content>
           </Card>
         )}

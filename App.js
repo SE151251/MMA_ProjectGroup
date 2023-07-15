@@ -142,7 +142,7 @@ export default function App() {
           component={DrawerNavigator}
           options={{
             title: "All Categories",
-            headerShown: false,
+            headerShown: true,
             style: { backgroundColor: COLORS.gray },
           }}
         />

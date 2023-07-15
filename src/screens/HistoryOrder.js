@@ -25,6 +25,7 @@ const HistoryOrder = ({navigation}) => {
             },
           }
         );
+        console.log("tới");
         setData(res.data);
       } catch (error) {
         console.error("API error:", error);

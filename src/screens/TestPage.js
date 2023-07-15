@@ -8,15 +8,13 @@ const TestPage = ({navigation}) => {
 
   const handleLogin = async () => {
     try {
-      //const data = await login(email, password);
-      
-      // Xử lý dữ liệu nhận được sau khi đăng nhập thành công
-      console.log('Login success:', email, password);
+      console.log('Login submit:', email, password);
       const data = await axios.post(`https://bmosapplication.azurewebsites.net/odata/authentications/login`,
       { 
         email: email,
       passwordHash: password
     })
+    console.log("zo đây");
     if(data.data.role === "Customer") {
       console.log("zo");
       await AsyncStorage.setItem("access_token", data.data.accessToken)
