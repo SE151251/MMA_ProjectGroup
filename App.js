@@ -17,6 +17,9 @@ import { PaperProvider } from "react-native-paper";
 import ProductDetailScreen from "./src/screens/ProductDetailScreen";
 import HistoryOrder from "./src/screens/HistoryOrder";
 import OrderDetail from "./src/screens/OrderDetail";
+import WalletScreen from "./src/screens/WalletScreen";
+import Toast from 'react-native-toast-message';
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,6 +85,23 @@ const BottomTabNavigators = () => {
           tabBarActiveTintColor: "#A52A2A",
         }}
       />
+       <Tab.Screen
+        name="WalletCustomer"
+        // component={Login}
+        component={WalletScreen}
+        options={{
+          tabBarLabel: "Wallet",
+          // tabBarShowLabel: true,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "wallet" : "wallet-outline"}
+              size={focused ? 25 : 22}
+              color={focused ? "#A52A2A" : "grey"}
+            />
+          ),
+          tabBarActiveTintColor: "#A52A2A",
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -132,6 +152,17 @@ const DrawerNavigator = () => {
 };
 
 export default function App() {
+  // Toast.setConfig({
+  //   position: 'bottom',
+  //   duration: 3000,
+  //   hideOnPress: true,
+  //   topOffset: 30,
+  //   bottomOffset: 40,
+  //   textStyle: { fontSize: 15, fontWeight: 'bold' },
+  //   backgroundColor: '#333333',
+  //   textColor: '#ffffff',
+  // });
+
   return (
     <PaperProvider>
     <NavigationContainer>
@@ -152,6 +183,7 @@ export default function App() {
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    <Toast />
     </PaperProvider>
   );
 }

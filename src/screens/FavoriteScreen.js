@@ -6,6 +6,9 @@ import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FavoriteItem from "../components/FavoriteItem";
 import { Button, Card } from 'react-native-paper';
+import  Toast  from 'react-native-toast-message';
+import axios from "axios";
+
 const FavoriteScreen = ({ navigation }) => {
   const [favData, setFavData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -59,7 +62,51 @@ const FavoriteScreen = ({ navigation }) => {
     setFavData(list);
     setShowClearAll(list.length > 1);
   };
-
+  const hanldeCheckout = async () => {
+    try {
+      const dataCheckout = favData.map((d)=>({
+        id: d.id,
+        amount: d.quantity
+      }))
+      console.log(dataCheckout);
+      const user_info_json = await AsyncStorage.getItem("user_info");
+      const user_info =
+        user_info_json != null
+          ? JSON.parse(user_info_json)
+          : {           
+              email: "error get email from async storage",           
+            };
+        if(user_info.email==="error get email from async storage"){
+          Toast.show({
+            type: 'error',
+            text1: 'Error before call API',
+            text2: 'Cannot get user info from async storage'
+          });
+          return
+        } 
+        const access_token = await AsyncStorage.getItem("access_token");
+      const res = await axios.post(`https://bmosapplication.azurewebsites.net/odata/Orders`,{
+        email: user_info.email ,
+        meals: dataCheckout
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      console.log(res.data);
+      Toast.show({
+        type: 'success',
+        text1: 'Message',
+        text2: 'Checkout successfully'
+      });
+      await AsyncStorage.clear()
+      navigation.navigate("Home")
+    } catch (error) {
+      console.log(error.response.data);
+    }     
+    
+  }
   return (
     <ScrollView style={styles.container}>
       {favData.length !== 0 ? (
@@ -98,7 +145,7 @@ const FavoriteScreen = ({ navigation }) => {
       <Text>Total Price: {totalPrice} VNĐ</Text>
     </Card.Content>
   </Card>
-  <Button icon="cart-check" mode="contained" onPress={() => console.log('Pressed')} style={{position:"relative", bottom: 0}}>
+  <Button icon="cart-check" mode="contained" onPress={() => hanldeCheckout()} style={{position:"relative", bottom: 0}}>
     Checkout
   </Button>
         </View>

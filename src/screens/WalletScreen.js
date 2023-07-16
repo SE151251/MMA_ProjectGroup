@@ -1,11 +1,11 @@
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Card } from "react-native-paper";
 import { format } from 'date-fns';
 import { useIsFocused } from "@react-navigation/native";
-const HistoryOrder = ({navigation}) => {
+const WalletScreen = ({navigation}) => {
   const [data, setData] = useState();
   const isFocused = useIsFocused()
   useEffect(() => {
@@ -20,29 +20,33 @@ const HistoryOrder = ({navigation}) => {
       const access_token = await AsyncStorage.getItem("access_token");
       try {
         const res = await axios.get(
-          `https://bmosapplication.azurewebsites.net/odata/orders/customer/${user_info.id}`,
+          `https://bmosapplication.azurewebsites.net/odata/Wallets/${user_info.id}?$expand=WalletTransactions`,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
             },
           }
-        );
-        console.log(res.data);
+        );       
         setData(res.data);
       } catch (error) {
         console.error("API error:", error);
       }
     };
     if(isFocused){
-    loadDataOrder();
-    }
+      loadDataOrder();
+    }     
   },[isFocused]);
   return (
     <View>
-      <Text>HistoryOrder</Text>
+      {data && <>
+      
+      
+      <Text style={{textAlign: "center", fontSize:30, fontWeight:700}}>Wallet Screen</Text>
+      <Text style={{textAlign: "center", fontSize:30, fontWeight:700}}>Your Balance: {data.Balance}</Text>
       <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
+        data={data.WalletTransactions}
+        keyExtractor={(item) => item.RechargeID}
+        style={{marginBottom: 100}}
         renderItem={({ item }) => (
           <Card
             style={{
@@ -51,31 +55,25 @@ const HistoryOrder = ({navigation}) => {
               marginBottom: 20,
               marginLeft: 20,
               marginRight: 20,
-            }}
-            onPress={() => {
-              navigation.navigate("OrderDetail", {        
-               orderId: item.id
-              });
-            }}
+            }}         
           >
             <Card.Content>
-              <Text
-                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
-              >
-                Order ID: {item.id}
+              <Text>
+                Recharge time: {`${format(new Date(item.RechargeTime), 'dd/MM/yyyy')}`}
               </Text>
-              <Text>{`${format(new Date(item.orderedDate), 'dd/MM/yyyy')}`}</Text>
-              <Text>Total: {item.total} VNĐ</Text>
-              {item.orderStatus === 0 && <Text>Status: New Order</Text>}
-              {item.orderStatus === 1 && <Text>Status: Processing</Text>}
-              {item.orderStatus === 2 && <Text>Status: Done</Text>}
-              {item.orderStatus === 3 && <Text>Status: Canceled</Text>}            
+              <Text>Amount: {item.Amount}</Text>
+              <Text>Contetn: {item.Content}</Text>
+              <Text>Transaction type: {item.TransactionType} </Text>
+              {item.RechargeStatus === 1 && <Text>Recharge Status: Successed </Text>}
+              {item.RechargeStatus === 2 && <Text>Recharge Status: Failed </Text>}
+              {item.RechargeStatus === 0 && <Text>Recharge Status: Pending </Text>}
             </Card.Content>
           </Card>
         )}
       />
+      </>}
     </View>
   );
 };
 
-export default HistoryOrder;
+export default WalletScreen;

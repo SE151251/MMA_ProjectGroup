@@ -1,12 +1,15 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { format } from 'date-fns';
 import { Ionicons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
 const OrderDetail = ({navigation,route}) => {
   const [data, setData] = useState();
+  const isFocused = useIsFocused()
+  console.log(isFocused);
   console.log(route.params);
   useEffect(() => {
     const loadDataOrder = async () => {
@@ -34,11 +37,40 @@ const OrderDetail = ({navigation,route}) => {
         console.error("API error:", error);
       }
     };
-    loadDataOrder();
+    if(isFocused){
+      loadDataOrder();
+    }
     
-  },[]);
+    
+  },[isFocused]);
+  const handleCancelOrder = async () =>{
+    const user_info_json = await AsyncStorage.getItem("user_info");
+    const user_info =
+      user_info_json != null
+        ? JSON.parse(user_info_json)
+        : {           
+            id: "001"           
+          };
+    const access_token = await AsyncStorage.getItem("access_token");
+    try {
+      const res = await axios.get(
+        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})/cancel`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("cancle order");
+      console.log(res.data);
+      //setData(res.data);
+    } catch (error) {
+      console.error("API error:", error);
+      console.log(error.response);
+    }
+  }
   return (
-    <View>
+    <ScrollView>
             <View style={{marginBottom:30, marginTop:20}}>
         <Ionicons
           name="arrow-back-outline"
@@ -57,15 +89,18 @@ const OrderDetail = ({navigation,route}) => {
               >
                 {`${format(new Date(data.orderedDate), 'dd/MM/yyyy')}`}
               </Text>
-              <Text>Status: {data.orderStatus}</Text>
               <Text>Total: {data.total} VNĐ</Text>
-              <Text>Status: </Text>
+              {data.orderStatus === 0 && <Text>Status: New Order</Text>}
+              {data.orderStatus === 1 && <Text>Status: Processing</Text>}
+              {data.orderStatus === 2 && <Text>Status: Done</Text>}
+              {data.orderStatus === 3 && <Text>Status: Canceled</Text>} 
+              {data.orderStatus === 0 && <Button onPress={handleCancelOrder}>Cancel</Button>}
             </Card.Content>
           </Card>  
         <Text>List Meals:</Text>
           <FlatList
         data={data.orderDetails}
-        keyExtractor={(item) => item.orderID}
+        keyExtractor={(item) => item.mealID}
         style={{marginTop:30}}
         renderItem={({ item }) => (
           <Card
@@ -85,6 +120,7 @@ const OrderDetail = ({navigation,route}) => {
               </Text>
               <Text>{item.meal.quantity}</Text>            
               <Text>Single price: {item.meal.price} </Text>
+              <Text>Quantity: {item.quantity}</Text>
               <Text>Total: {item.unitPrices} VNĐ</Text>
             </Card.Content>
           </Card>
@@ -94,7 +130,7 @@ const OrderDetail = ({navigation,route}) => {
      <Text>Order Log</Text>
       <FlatList
         data={data.orderTransactions}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.mealID}
         style={{marginTop:30}}
         renderItem={({ item }) => (
           <Card
@@ -117,7 +153,7 @@ const OrderDetail = ({navigation,route}) => {
       />
       </>}
          
-    </View>
+    </ScrollView>
   );
 };
 
