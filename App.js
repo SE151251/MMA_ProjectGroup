@@ -19,6 +19,10 @@ import HistoryOrder from "./src/screens/HistoryOrder";
 import OrderDetail from "./src/screens/OrderDetail";
 import WalletScreen from "./src/screens/WalletScreen";
 import Toast from 'react-native-toast-message';
+import DashboardStaff from "./src/screens/StaffScreens/DashboardStaff";
+import OrdersStaff from "./src/screens/StaffScreens/OrdersStaff";
+import DashboardAdmin from "./src/screens/AdminScreens/DashboardAdmin";
+import ManageUser from "./src/screens/AdminScreens/ManageUser";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -44,7 +48,7 @@ const BottomTabNavigators = () => {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
-              size={focused ? 25 : 22}
+              size={focused ? 22 : 22}
               color={focused ? "#A52A2A" : "grey"}
             />
           ),
@@ -61,7 +65,7 @@ const BottomTabNavigators = () => {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "cart" : "cart-outline"}
-              size={focused ? 25 : 22}
+              size={focused ? 22 : 22}
               color={focused ? "#A52A2A" : "grey"}
             />
           ),
@@ -78,7 +82,7 @@ const BottomTabNavigators = () => {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}
-              size={focused ? 25 : 22}
+              size={focused ? 22 : 22}
               color={focused ? "#A52A2A" : "grey"}
             />
           ),
@@ -95,7 +99,7 @@ const BottomTabNavigators = () => {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "wallet" : "wallet-outline"}
-              size={focused ? 25 : 22}
+              size={focused ? 22 : 22}
               color={focused ? "#A52A2A" : "grey"}
             />
           ),
@@ -105,6 +109,8 @@ const BottomTabNavigators = () => {
     </Tab.Navigator>
   );
 };
+
+
 
 const DrawerNavigator = () => {
   return (
@@ -125,7 +131,7 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"
-              size={focused ? 25 : 20}
+              size={focused ? 20 : 20}
               color={color}
             />
           ),
@@ -141,7 +147,123 @@ const DrawerNavigator = () => {
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="albums-outline"
-              size={focused ? 25 : 20}
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+const StaffDrawerNavigator = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomSideMenu {...props} />}
+      screenOptions={{
+        headerStyle: { backgroundColor: "#ffffff" },
+        headerTintColor: "black",
+        sceneContainerStyle: { backgroundColor: "#ffffff", height: 1 },
+      }}
+      initialRouteName="TabHomeStaff"
+    >
+      <Drawer.Screen
+        name="TabHomeStaff"
+        component={DashboardStaff}
+        options={{
+          title: "Home",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="ios-home-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    <Drawer.Screen
+        name="TabOrderStaff"
+        component={OrdersStaff}
+        options={{
+          title: "Home",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="ios-home-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Login"
+        component={TestPage}
+        options={{
+          title: "Login",
+          headerTitle: "Test",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="albums-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+const AdminDrawerNavigator = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomSideMenu {...props} />}
+      screenOptions={{
+        headerStyle: { backgroundColor: "#ffffff" },
+        headerTintColor: "black",
+        sceneContainerStyle: { backgroundColor: "#ffffff", height: 1 },
+      }}
+      initialRouteName="TabHomeAdmin"
+    >
+      <Drawer.Screen
+        name="TabHomeAdmin"
+        component={DashboardAdmin}
+        options={{
+          title: "Home",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="ios-home-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    <Drawer.Screen
+        name="ManageUser"
+        component={ManageUser}
+        options={{
+          title: "Manage User",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="ios-home-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Login"
+        component={TestPage}
+        options={{
+          title: "Login",
+          headerTitle: "Test",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="albums-outline"
+              size={focused ? 20 : 20}
               color={color}
             />
           ),
@@ -152,16 +274,6 @@ const DrawerNavigator = () => {
 };
 
 export default function App() {
-  // Toast.setConfig({
-  //   position: 'bottom',
-  //   duration: 3000,
-  //   hideOnPress: true,
-  //   topOffset: 30,
-  //   bottomOffset: 40,
-  //   textStyle: { fontSize: 15, fontWeight: 'bold' },
-  //   backgroundColor: '#333333',
-  //   textColor: '#ffffff',
-  // });
 
   return (
     <PaperProvider>
@@ -173,7 +285,7 @@ export default function App() {
           component={DrawerNavigator}
           options={{
             title: "All Categories",
-            headerShown: true,
+            // headerShown: true,
             style: { backgroundColor: COLORS.gray },
           }}
         />
@@ -181,6 +293,8 @@ export default function App() {
         <Stack.Screen name="OrderDetail" component={OrderDetail} />
         <Stack.Screen name="TestRedirect" component={Login} />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+        <Stack.Screen name="StaffHome" component={StaffDrawerNavigator} />
+        <Stack.Screen name="AdminHome" component={AdminDrawerNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
     <Toast />

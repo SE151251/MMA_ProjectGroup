@@ -13,18 +13,10 @@ const OrderDetail = ({navigation,route}) => {
   console.log(route.params);
   useEffect(() => {
     const loadDataOrder = async () => {
-      const user_info_json = await AsyncStorage.getItem("user_info");
-      const user_info =
-        user_info_json != null
-          ? JSON.parse(user_info_json)
-          : {           
-              id: "001"           
-            };
       const access_token = await AsyncStorage.getItem("access_token");
       try {
-        console.log(`https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})`);
         const res = await axios.get(
-          `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})`,
+          `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${route.params.userId})`,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
@@ -42,7 +34,7 @@ const OrderDetail = ({navigation,route}) => {
     
     
   },[isFocused]);
-  const handleCancelOrder = async (type, userId) =>{
+  const handleCancelOrder = async () =>{
     const user_info_json = await AsyncStorage.getItem("user_info");
     const user_info =
       user_info_json != null
@@ -53,7 +45,7 @@ const OrderDetail = ({navigation,route}) => {
     const access_token = await AsyncStorage.getItem("access_token");
     try {
       const res = await axios.get(
-        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${userId})/cancel`,
+        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})/cancel`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -92,10 +84,7 @@ const OrderDetail = ({navigation,route}) => {
               {data.orderStatus === 1 && <Text>Status: Processing</Text>}
               {data.orderStatus === 2 && <Text>Status: Done</Text>}
               {data.orderStatus === 3 && <Text>Status: Canceled</Text>} 
-              {data.orderStatus === 0 && <Button onPress={
-                // handleCancelOrder
-                ()=>console.log("abc")
-                }>Cancel</Button>}
+              {data.orderStatus === 0 && <Button onPress={handleCancelOrder}>Cancel</Button>}
             </Card.Content>
           </Card>  
         <Text>List Meals:</Text>

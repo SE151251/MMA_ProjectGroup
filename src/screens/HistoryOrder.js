@@ -27,7 +27,6 @@ const HistoryOrder = ({navigation}) => {
             },
           }
         );
-        console.log(res.data);
         setData(res.data);
       } catch (error) {
         console.error("API error:", error);
@@ -40,40 +39,42 @@ const HistoryOrder = ({navigation}) => {
   return (
     <View>
       <Text>HistoryOrder</Text>
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Card
-            style={{
-              paddingBottom: 10,
-              paddingTop: 10,
-              marginBottom: 20,
-              marginLeft: 20,
-              marginRight: 20,
-            }}
-            onPress={() => {
-              navigation.navigate("OrderDetail", {        
-               orderId: item.id
-              });
-            }}
+    {data &&
+    <FlatList
+    data={data}
+    keyExtractor={(item) => item.id}
+    renderItem={({ item }) => (
+      <Card
+        style={{
+          paddingBottom: 10,
+          paddingTop: 10,
+          marginBottom: 20,
+          marginLeft: 20,
+          marginRight: 20,
+        }}
+        onPress={() => {
+          navigation.navigate("OrderDetail", {        
+           orderId: item.id
+          });
+        }}
+      >
+        <Card.Content>
+          <Text
+            style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
           >
-            <Card.Content>
-              <Text
-                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
-              >
-                Order ID: {item.id}
-              </Text>
-              <Text>{`${format(new Date(item.orderedDate), 'dd/MM/yyyy')}`}</Text>
-              <Text>Total: {item.total} VNĐ</Text>
-              {item.orderStatus === 0 && <Text>Status: New Order</Text>}
-              {item.orderStatus === 1 && <Text>Status: Processing</Text>}
-              {item.orderStatus === 2 && <Text>Status: Done</Text>}
-              {item.orderStatus === 3 && <Text>Status: Canceled</Text>}            
-            </Card.Content>
-          </Card>
-        )}
-      />
+            Order ID: {item.id}
+          </Text>
+          <Text>{`${format(new Date(item.orderedDate), 'dd/MM/yyyy')}`}</Text>
+          <Text>Total: {item.total} VNĐ</Text>
+          {item.orderStatus === 0 && <Text>Status: New Order</Text>}
+          {item.orderStatus === 1 && <Text>Status: Processing</Text>}
+          {item.orderStatus === 2 && <Text>Status: Done</Text>}
+          {item.orderStatus === 3 && <Text>Status: Canceled</Text>}            
+        </Card.Content>
+      </Card>
+    )}
+  />
+    } 
     </View>
   );
 };

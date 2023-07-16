@@ -14,20 +14,29 @@ const TestPage = ({navigation}) => {
         email: email,
       passwordHash: password
     })
-    console.log("zo đây");
+    console.log("zo đây", data.data);
+    await AsyncStorage.setItem("access_token", data.data.accessToken)
+    await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
+    await AsyncStorage.setItem("user_info",JSON.stringify({
+      id: data.data.accountId,
+      email: data.data.email,
+      name: data.data.fullName,
+      role: data.data.role
+    }))
     if(data.data.role === "Customer") {
-      console.log("zo");
-      await AsyncStorage.setItem("access_token", data.data.accessToken)
-      await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
-      await AsyncStorage.setItem("user_info",JSON.stringify({
-        id: data.data.accountId,
-        email: data.data.email,
-        name: data.data.fullName,
-        role: data.data.role
-      }))
+      console.log("zo");   
       navigation.navigate("Home")
+      return
     }
-    
+    if(data.data.role === "Staff"){
+      navigation.navigate("StaffHome")
+      return
+    }
+    if(data.data.role === "Store Owner"){
+      console.log("admin");
+      navigation.navigate("AdminHome")
+      return
+    }
     } catch (error) {
       // Xử lý lỗi khi đăng nhập thất bại
       if(error.response && error.response.data){
