@@ -156,7 +156,7 @@ const EditProfile = ({ route, navigation }) => {
     const validateGender = (inputGender) => {
         let isValid = true
         setGenderError('');
-        if (!inputGender || inputGender.length === 0) {
+        if (inputGender === null || inputGender.length === 0) {
             setGenderError('Please select your gender');
             isValid = false
         } else {

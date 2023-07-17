@@ -94,7 +94,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import COLORS from '../constants/colors'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const TestPage = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
 
 
 
-export default TestPage;
+export default Login;
 
 
 

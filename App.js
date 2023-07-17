@@ -11,8 +11,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import FavoriteScreen from "./src/screens/FavoriteScreen";
 import DetailsScreen from "./src/screens/DetailScreen";
 import CustomSideMenu from "./src/screens/CustomSideMenu";
-import TestPage from "./src/screens/TestPage";
-import Login from "./src/screens/LoginPage";
+import ShowPageMomo from "./src/screens/ShowPageMomo";
 import { PaperProvider } from "react-native-paper";
 import ProductDetailScreen from "./src/screens/ProductDetailScreen";
 import HistoryOrder from "./src/screens/HistoryOrder";
@@ -28,6 +27,7 @@ import DepositMoney from "./src/screens/DepostiMoney";
 import Profile from "./src/screens/Profile";
 import Register from "./src/screens/Register";
 import EditProfile from "./src/screens/EditProfile";
+import Login from "./src/screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -290,9 +290,9 @@ export default function App() {
           component={DrawerNavigator}       
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="LoginScreen" component={TestPage} />
+        <Stack.Screen name="LoginScreen" component={Login} />
         <Stack.Screen name="OrderDetail" component={OrderDetail} />
-        <Stack.Screen name="TestRedirect" component={Login} />
+        <Stack.Screen name="ShowPageMomo" component={ShowPageMomo} />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
         <Stack.Screen name="StaffHome" component={StaffDrawerNavigator} />
         <Stack.Screen name="AdminHome" component={AdminDrawerNavigator} />
