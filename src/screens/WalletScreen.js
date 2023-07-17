@@ -2,7 +2,7 @@ import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 import { format } from 'date-fns';
 import { useIsFocused } from "@react-navigation/native";
 const WalletScreen = ({navigation}) => {
@@ -43,8 +43,11 @@ const WalletScreen = ({navigation}) => {
       
       <Text style={{textAlign: "center", fontSize:30, fontWeight:700}}>Wallet Screen</Text>
       <Text style={{textAlign: "center", fontSize:30, fontWeight:700}}>Your Balance: {data.Balance}</Text>
+      <Button onPress={()=>{
+          navigation.navigate("DepositMoney");
+        }}>Deposit Money</Button>
       <FlatList
-        data={data.WalletTransactions}
+        data={data.WalletTransactions.reverse()}
         keyExtractor={(item) => item.RechargeID}
         style={{marginBottom: 100}}
         renderItem={({ item }) => (

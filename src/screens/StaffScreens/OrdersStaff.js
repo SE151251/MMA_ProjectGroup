@@ -13,7 +13,7 @@ const DashboardStaff = ({navigation}) => {
       const access_token = await AsyncStorage.getItem("access_token");
       try {
         const res = await axios.get(
-          `https://bmosapplication.azurewebsites.net/odata/Orders`,
+          `https://bmosapplication.azurewebsites.net/odata/Orders?$expand=Customer($expand=Account)`,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
@@ -21,7 +21,6 @@ const DashboardStaff = ({navigation}) => {
           }
         );
         setData(res.data.value);
-        console.log(res.data.value);
       } catch (error) {
         console.error("API error:", error);
       }
@@ -32,11 +31,11 @@ const DashboardStaff = ({navigation}) => {
   },[isFocused]);
   return (
     <View>
-      <Text>Staff Dashboard</Text>
+      <Text>List orders</Text>
     {data &&
    
    <FlatList
-   data={data}
+   data={data.reverse()}
    keyExtractor={(item) => item.id}
    renderItem={({ item }) => (
      <Card
@@ -47,16 +46,21 @@ const DashboardStaff = ({navigation}) => {
          marginLeft: 20,
          marginRight: 20,
        }}
-    //    onPress={() => {
-    //      navigation.navigate("OrderDetail", {        
-    //       orderId: item.id
-    //      });
-    //    }}
+       onPress={() => {
+         navigation.navigate("OrderDetailStaff", {        
+          orderId: item.ID,
+          userId: item.Customer.Account.ID
+         });
+       }}
      >
        <Card.Content>
-         <Text
-           style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
-         >
+       <Text style={{  fontSize: 20, fontWeight: 700 }}>
+          Customer Name: {item.Customer.FullName}
+         </Text>
+         <Text>
+          Email: {item.Customer.Account.Email}
+         </Text>
+         <Text>
           OrderID: {item.ID}
          </Text>
          <Text>Order Time: {`${format(new Date(item.OrderedDate), 'dd/MM/yyyy')}`}</Text>

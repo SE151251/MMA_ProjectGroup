@@ -14,7 +14,6 @@ const TestPage = ({navigation}) => {
         email: email,
       passwordHash: password
     })
-    console.log("zo đây", data.data);
     await AsyncStorage.setItem("access_token", data.data.accessToken)
     await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
     await AsyncStorage.setItem("user_info",JSON.stringify({
@@ -29,6 +28,7 @@ const TestPage = ({navigation}) => {
       return
     }
     if(data.data.role === "Staff"){
+      console.log("staff token: ", data.data.accessToken);
       navigation.navigate("StaffHome")
       return
     }

@@ -21,8 +21,10 @@ import WalletScreen from "./src/screens/WalletScreen";
 import Toast from 'react-native-toast-message';
 import DashboardStaff from "./src/screens/StaffScreens/DashboardStaff";
 import OrdersStaff from "./src/screens/StaffScreens/OrdersStaff";
+import OrderDetailStaff from "./src/screens/StaffScreens/OrderDetailStaff";
 import DashboardAdmin from "./src/screens/AdminScreens/DashboardAdmin";
 import ManageUser from "./src/screens/AdminScreens/ManageUser";
+import DepositMoney from "./src/screens/DepostiMoney";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -186,7 +188,7 @@ const StaffDrawerNavigator = () => {
         name="TabOrderStaff"
         component={OrdersStaff}
         options={{
-          title: "Home",
+          title: "List Orders",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"
@@ -295,6 +297,8 @@ export default function App() {
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
         <Stack.Screen name="StaffHome" component={StaffDrawerNavigator} />
         <Stack.Screen name="AdminHome" component={AdminDrawerNavigator} />
+        <Stack.Screen name="OrderDetailStaff" component={OrderDetailStaff} />
+        <Stack.Screen name="DepositMoney" component={DepositMoney} />
       </Stack.Navigator>
     </NavigationContainer>
     <Toast />

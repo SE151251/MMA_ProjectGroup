@@ -27,7 +27,7 @@ const HistoryOrder = ({navigation}) => {
             },
           }
         );
-        setData(res.data);
+        setData(res.data.reverse());
       } catch (error) {
         console.error("API error:", error);
       }

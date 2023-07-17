@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList, ScrollView, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,7 +16,7 @@ const OrderDetail = ({navigation,route}) => {
       const access_token = await AsyncStorage.getItem("access_token");
       try {
         const res = await axios.get(
-          `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${route.params.userId})`,
+          `https://bmosapplication.azurewebsites.net/odata/Orders/${route.params.orderId}?expand=Customer,OrderDetails,OrderTransactions`,
           {
             headers: {
               Authorization: `Bearer ${access_token}`,
@@ -34,33 +34,81 @@ const OrderDetail = ({navigation,route}) => {
     
     
   },[isFocused]);
-  const handleCancelOrder = async () =>{
-    const user_info_json = await AsyncStorage.getItem("user_info");
-    const user_info =
-      user_info_json != null
-        ? JSON.parse(user_info_json)
-        : {           
-            id: "001"           
-          };
-    const access_token = await AsyncStorage.getItem("access_token");
+  const handleClickButton = (type) => {
+    // var typeAlert;
+    // if(type === "Processing") typeAlert=`Are you sure?", "You really want to ${type} this order?`
+    Alert.alert("Are you sure?", `You really want to ${type} this order?`, [
+      {
+        text: "No",
+        onPress: () => {},
+        style: "destructive",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          handleStatusOrder(type)
+        },
+      },
+    ]);
+  }
+  const handleStatusOrder = async (type) =>{
+    // const user_info_json = await AsyncStorage.getItem("user_info");
+    // const user_info =
+    //   user_info_json != null
+    //     ? JSON.parse(user_info_json)
+    //     : {           
+    //         id: "001"           
+    //       };
+    
     try {
-      const res = await axios.get(
-        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})/cancel`,
+      const access_token = await AsyncStorage.getItem("access_token");
+      console.log("access token: ", access_token);
+      if(type==="Cancel"){    
+      const res = await axios.delete(
+        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${route.params.userId})/cancel`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         }
       );
-      console.log("cancle order");
-      setData(res.data);
+      navigation.goBack()
+      return
+    }
+    if(type==="Processing"){  
+      const res = await axios.put(
+        `https://bmosapplication.azurewebsites.net/odata/orders/update-processing/${route.params.orderId}`,
+      {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      navigation.goBack()
+      return
+    }
+    if(type==="Done"){    
+      console.log(access_token);
+      const res = await axios.put(
+        `https://bmosapplication.azurewebsites.net/odata/orders/update-done/${route.params.orderId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("success");
+      navigation.goBack()
+      return
+    }
     } catch (error) {
-      console.error("API error:", error);
-      console.log(error.response);
+      console.log(error);
     }
   }
   return (
-    <ScrollView>
+    <View>
             <View style={{marginBottom:20, marginTop: 30}}>
         <Ionicons
           name="arrow-back-outline"
@@ -74,22 +122,41 @@ const OrderDetail = ({navigation,route}) => {
       {data && <>
         <Card>
             <Card.Content>
-            <Text>ID: {data.id}</Text> 
+            <Text>Customer Name: {data.Customer.FullName}</Text> 
               <Text
               >
-                {`${format(new Date(data.orderedDate), 'dd/MM/yyyy')}`}
+                Phone number: {data.Customer.Phone}
               </Text>
-              <Text>Total: {data.total} VNĐ</Text>
-              {data.orderStatus === 0 && <Text>Status: New Order</Text>}
-              {data.orderStatus === 1 && <Text>Status: Processing</Text>}
-              {data.orderStatus === 2 && <Text>Status: Done</Text>}
-              {data.orderStatus === 3 && <Text>Status: Canceled</Text>} 
-              {data.orderStatus === 0 && <Button onPress={handleCancelOrder}>Cancel</Button>}
+               {/* <Text>Quantity: {data.OrderDetails.Quantity}</Text> */}
+              <Text>Address: {data.Customer.Address}</Text>
+            </Card.Content>
+          </Card>  
+
+        <Card>
+            <Card.Content>
+            <Text>ID: {data.ID}</Text> 
+              <Text
+              >
+                Order Date: {`${format(new Date(data.OrderedDate), 'dd/MM/yyyy')}`}
+              </Text>
+               {/* <Text>Quantity: {data.OrderDetails.Quantity}</Text> */}
+              <Text>Total: {data.Total} VNĐ</Text>
+              {data.OrderStatus === 0 && <Text>Status: New Order</Text>}
+              {data.OrderStatus === 1 && <Text>Status: Processing</Text>}
+              {data.OrderStatus === 2 && <Text>Status: Done</Text>}
+              {data.OrderStatus === 3 && <Text>Status: Canceled</Text>} 
+              {data.OrderStatus === 0 && 
+              <View>
+                <Button onPress={()=>handleClickButton("Processing")}>Confirm to Processing</Button>
+                <Button onPress={()=>handleClickButton("Cancel")}>Cancel</Button>
+              </View>  
+              }
+              {data.OrderStatus === 1 && <Button onPress={()=>handleClickButton("Done")}>Confirm to Done</Button>}
             </Card.Content>
           </Card>  
         <Text>List Meals:</Text>
           <FlatList
-        data={data.orderDetails}
+        data={data.OrderDetails}
         keyExtractor={(item) => item.mealID}
         style={{marginTop:30}}
         renderItem={({ item }) => (
@@ -106,12 +173,11 @@ const OrderDetail = ({navigation,route}) => {
               <Text
                 style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
               >
-                {item.meal.title}
-              </Text>
-              <Text>{item.meal.quantity}</Text>            
-              <Text>Single price: {item.meal.price} </Text>
-              <Text>Quantity: {item.quantity}</Text>
-              <Text>Total: {item.unitPrices} VNĐ</Text>
+                {item.Meal.Title}
+              </Text>         
+              <Text>Single price: {item.Meal.Price} </Text>
+              <Text>Quantity: {item.Quantity}</Text>
+              <Text>Total: {item.UnitPrices} VNĐ</Text>
             </Card.Content>
           </Card>
         )}
@@ -119,8 +185,8 @@ const OrderDetail = ({navigation,route}) => {
 
      <Text>Order Log</Text>
       <FlatList
-        data={data.orderTransactions}
-        keyExtractor={(item) => item.mealID}
+        data={data.OrderTransactions}
+        keyExtractor={(item) => item.ID}
         style={{marginTop:30}}
         renderItem={({ item }) => (
           <Card
@@ -134,16 +200,19 @@ const OrderDetail = ({navigation,route}) => {
           >
             <Card.Content>
               <Text>
-               Log time: {`${format(new Date(item.paymentTime), 'dd/MM/yyyy')}`}
+               Log time: {`${format(new Date(item.PaymentTime), 'dd/MM/yyyy')}`}
               </Text>            
-              <Text>Status: {item.status}</Text>
+              {item.Status === 0 && <Text>Status: New Order</Text>}
+          {item.Status === 1 && <Text>Status: Processing</Text>}
+          {item.Status === 2 && <Text>Status: Done</Text>}
+          {item.Status === 3 && <Text>Status: Canceled</Text>}      
             </Card.Content>
           </Card>
         )}
       />
       </>}
          
-    </ScrollView>
+    </View>
   );
 };
 

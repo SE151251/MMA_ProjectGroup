@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList, ScrollView, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,8 +9,6 @@ import { useIsFocused } from "@react-navigation/native";
 const OrderDetail = ({navigation,route}) => {
   const [data, setData] = useState();
   const isFocused = useIsFocused()
-  console.log(isFocused);
-  console.log(route.params);
   useEffect(() => {
     const loadDataOrder = async () => {
       const user_info_json = await AsyncStorage.getItem("user_info");
@@ -22,7 +20,6 @@ const OrderDetail = ({navigation,route}) => {
             };
       const access_token = await AsyncStorage.getItem("access_token");
       try {
-        console.log(`https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})`);
         const res = await axios.get(
           `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${user_info.id})`,
           {
@@ -42,7 +39,22 @@ const OrderDetail = ({navigation,route}) => {
     
     
   },[isFocused]);
-  const handleCancelOrder = async (type, userId) =>{
+  const handleCancelOrder = async (orderId) => {
+    Alert.alert("Are you sure?", "You really want to cancel this order?", [
+      {
+        text: "No",
+        onPress: () => {},
+        style: "destructive",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          cancelOrder(orderId)
+        },
+      },
+    ]);
+  };
+  const cancelOrder = async (orderId) =>{
     const user_info_json = await AsyncStorage.getItem("user_info");
     const user_info =
       user_info_json != null
@@ -52,24 +64,23 @@ const OrderDetail = ({navigation,route}) => {
           };
     const access_token = await AsyncStorage.getItem("access_token");
     try {
-      const res = await axios.get(
-        `https://bmosapplication.azurewebsites.net/odata/orders/order(${route.params.orderId})/customer(${userId})/cancel`,
+      const res = await axios.delete(
+        `https://bmosapplication.azurewebsites.net/odata/orders/order(${orderId})/customer(${user_info.id})/cancel`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         }
       );
-      console.log("cancle order");
-      setData(res.data);
+      navigation.goBack()
+      return
     } catch (error) {
-      console.error("API error:", error);
-      console.log(error.response);
+      console.log(error);
     }
   }
   return (
-    <ScrollView>
-            <View style={{marginBottom:20, marginTop: 30}}>
+    <View>
+      <View style={{marginBottom:20, marginTop: 30}}>
         <Ionicons
           name="arrow-back-outline"
           size={30}
@@ -93,8 +104,8 @@ const OrderDetail = ({navigation,route}) => {
               {data.orderStatus === 2 && <Text>Status: Done</Text>}
               {data.orderStatus === 3 && <Text>Status: Canceled</Text>} 
               {data.orderStatus === 0 && <Button onPress={
-                // handleCancelOrder
-                ()=>console.log("abc")
+               ()=> handleCancelOrder(data.id)
+                // ()=>console.log("abc")
                 }>Cancel</Button>}
             </Card.Content>
           </Card>  
@@ -154,7 +165,7 @@ const OrderDetail = ({navigation,route}) => {
       />
       </>}
          
-    </ScrollView>
+    </View>
   );
 };
 
