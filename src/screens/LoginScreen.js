@@ -176,13 +176,15 @@ const Login = ({ navigation }) => {
     }
     if(data.data.role === "Staff"){
       console.log("staff token: ", data.data.accessToken);
+      setEmail('')
+      setPassword('')
       navigation.navigate("StaffHome")
       return
     }
     if(data.data.role === "Store Owner"){
       console.log("admin");
-      setEmail(null)
-      setPassword(null)
+      setEmail('')
+      setPassword('')
       navigation.navigate("AdminHome")
       return
     }

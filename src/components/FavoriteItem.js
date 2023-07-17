@@ -47,12 +47,12 @@ const FavoriteItem = ({ data, navigation, removeDataFromStorage, updateQuantityC
     onPress={() => updateQuantityCart('Plus', data.id)}
   />
           <Text style={styles.text}> {data.quantity}</Text>
-          <IconButton
+    {data.quantity >1 && <IconButton
     icon="minus-box-outline"
     iconColor={MD3Colors.neutral100}
     size={20}
     onPress={() => updateQuantityCart('Minus', data.id)}
-  />
+  />}
   </View>
    
   

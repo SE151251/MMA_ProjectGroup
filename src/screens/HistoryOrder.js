@@ -27,6 +27,10 @@ const HistoryOrder = ({navigation}) => {
         const res = await axios.get(
           `https://bmosapplication.azurewebsites.net/odata/orders/customer/${user_info.id}`,
           {
+            //If post or put
+            //.......
+          },
+          {
             headers: {
               Authorization: `Bearer ${access_token}`,
             },

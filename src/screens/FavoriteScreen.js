@@ -62,7 +62,7 @@ const FavoriteScreen = ({ navigation }) => {
       }
       else if(type==="Minus"){
         if(foundItem.quantity === 1 ){
-       
+          console.log("còn 1 quantity");
         }else{
           foundItem.quantity -= 1;
         }    
@@ -70,9 +70,9 @@ const FavoriteScreen = ({ navigation }) => {
         list = [
             ...favData
           ];
-     
+      
       await AsyncStorage.setItem("cart", JSON.stringify(list));
-      setFavData(list)
+      getFromStorage()
     
    }
   const removeDataFromStorage = async (id) => {
@@ -165,6 +165,7 @@ const FavoriteScreen = ({ navigation }) => {
               renderItem={({ item }) => (
                 <FavoriteItem navigation={navigation} data={item} removeDataFromStorage={removeDataFromStorage}
                 updateQuantityCart={updateQuantityCart}
+            
                 />
               )}
             />
