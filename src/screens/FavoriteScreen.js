@@ -31,8 +31,7 @@ const FavoriteScreen = ({ navigation }) => {
         totalPriceInCart = totalPriceInCart + (dataParse[i].price * dataParse[i].quantity)
         totalMealInCart = totalMealInCart + dataParse[i].quantity
       }
-    }
-    
+    }  
     setTotalPrice(totalPriceInCart)
     setTotalMeal(totalMealInCart)
     setShowClearAll(storageData != null && JSON.parse(storageData).length > 1);
@@ -55,7 +54,27 @@ const FavoriteScreen = ({ navigation }) => {
       },
     ]);
   };
-
+   const updateQuantityCart = async (type, id) => {
+    let list = [];
+      const foundItem = favData.find((item) => item.id === id);
+      if(type === "Plus"){
+        foundItem.quantity += 1;
+      }
+      else if(type==="Minus"){
+        if(foundItem.quantity === 1 ){
+       
+        }else{
+          foundItem.quantity -= 1;
+        }    
+      }
+        list = [
+            ...favData
+          ];
+     
+      await AsyncStorage.setItem("cart", JSON.stringify(list));
+      setFavData(list)
+    
+   }
   const removeDataFromStorage = async (id) => {
     const list = favData.filter((item) => item.id !== id);
     await AsyncStorage.setItem("cart", JSON.stringify(list));
@@ -64,18 +83,29 @@ const FavoriteScreen = ({ navigation }) => {
   };
   const hanldeCheckout = async () => {
     try {
-      const dataCheckout = favData.map((d)=>({
-        id: d.id,
-        amount: d.quantity
-      }))
-      console.log(dataCheckout);
       const user_info_json = await AsyncStorage.getItem("user_info");
       const user_info =
         user_info_json != null
           ? JSON.parse(user_info_json)
           : {           
-              email: "error get email from async storage",           
+            id: "001",
+            email:"",
+            isLogin: false
             };
+         if(user_info.isLogin === false){     
+          return navigation.navigate("LoginScreen")
+         }   
+      const dataCheckout = favData.map((d)=>({
+        id: d.id,
+        amount: d.quantity
+      }))
+      // const user_info_json = await AsyncStorage.getItem("user_info");
+      // const user_info =
+      //   user_info_json != null
+      //     ? JSON.parse(user_info_json)
+      //     : {           
+      //         email: "error get email from async storage",           
+      //       };
         if(user_info.email==="error get email from async storage"){
           Toast.show({
             type: 'error',
@@ -133,7 +163,9 @@ const FavoriteScreen = ({ navigation }) => {
               // numColumns={2}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <FavoriteItem navigation={navigation} data={item} removeDataFromStorage={removeDataFromStorage} />
+                <FavoriteItem navigation={navigation} data={item} removeDataFromStorage={removeDataFromStorage}
+                updateQuantityCart={updateQuantityCart}
+                />
               )}
             />
           </View>

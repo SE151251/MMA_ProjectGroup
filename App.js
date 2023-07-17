@@ -25,7 +25,9 @@ import OrderDetailStaff from "./src/screens/StaffScreens/OrderDetailStaff";
 import DashboardAdmin from "./src/screens/AdminScreens/DashboardAdmin";
 import ManageUser from "./src/screens/AdminScreens/ManageUser";
 import DepositMoney from "./src/screens/DepostiMoney";
-import ProfileUser from "./src/screens/ProfileUser";
+import Profile from "./src/screens/Profile";
+import Register from "./src/screens/Register";
+import EditProfile from "./src/screens/EditProfile";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -144,7 +146,7 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="Profile"
-        component={ProfileUser}
+        component={Profile}
         options={{
           title: "My Profile",     
           drawerIcon: ({ color, focused }) => (
@@ -296,6 +298,8 @@ export default function App() {
         <Stack.Screen name="AdminHome" component={AdminDrawerNavigator} />
         <Stack.Screen name="OrderDetailStaff" component={OrderDetailStaff} />
         <Stack.Screen name="DepositMoney" component={DepositMoney} />
+        <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       </Stack.Navigator>
     </NavigationContainer>
     <Toast />

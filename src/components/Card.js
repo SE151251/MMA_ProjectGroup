@@ -76,7 +76,6 @@ const Card = ({ data, navigation, cartData }) => {
         useNativeDriver: true,
       }).start();
     });
-    console.log("zo 2");
     setDataToStorage();
   };
 

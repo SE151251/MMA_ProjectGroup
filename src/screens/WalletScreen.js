@@ -15,7 +15,8 @@ const WalletScreen = ({navigation}) => {
         user_info_json != null
           ? JSON.parse(user_info_json)
           : {           
-              id: "001"           
+              id: "001", 
+              isLogin: false          
             };
             if(user_info.isLogin === false){
               setData()

@@ -11,9 +11,10 @@ import {
 } from "react-native";
 import HTML from "react-native-render-html";
 import COLORS from "../constants/colors";
+import { IconButton, MD3Colors } from "react-native-paper";
 const width = Dimensions.get("screen").width / 2 - 30;
 
-const FavoriteItem = ({ data, navigation, removeDataFromStorage }) => {
+const FavoriteItem = ({ data, navigation, removeDataFromStorage, updateQuantityCart }) => {
   const [contentWidth, setContentWidth] = useState(0);
   const windowWidth = useWindowDimensions().width;
   useEffect(() => {
@@ -35,8 +36,27 @@ const FavoriteItem = ({ data, navigation, removeDataFromStorage }) => {
             source={{ html: data.title }}
           />
           <Text style={styles.text}>Single priece: {data.price} VNĐ</Text>
-          <Text style={styles.text}>Quantity: {data.quantity}</Text>
-        </View>
+        
+         
+  <View style={{flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}}>
+    <Text style={styles.text}>Quantity:</Text>
+  <IconButton
+    icon="plus-box-outline"
+    iconColor={MD3Colors.neutral100}
+    size={20}
+    onPress={() => updateQuantityCart('Plus', data.id)}
+  />
+          <Text style={styles.text}> {data.quantity}</Text>
+          <IconButton
+    icon="minus-box-outline"
+    iconColor={MD3Colors.neutral100}
+    size={20}
+    onPress={() => updateQuantityCart('Minus', data.id)}
+  />
+  </View>
+   
+  
+     </View>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => removeDataFromStorage(data.id)}

@@ -33,7 +33,11 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "^13.4.0",
     "react-native-toast-message": "^2.1.6",
-    "react-native-webview": "^13.2.2"
+    "react-native-webview": "^13.2.2",
+    "@react-native-community/datetimepicker": "6.7.3",
+    "@react-native-picker/picker": "^2.4.10",
+    "expo-image-picker": "~14.1.1",
+    "expo-file-system": "~15.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
