@@ -30,7 +30,6 @@ const Card = ({ data, navigation, cartData }) => {
   const setDataToStorage = async () => {
     let list = [];
     if (cartData.length === 0) {
-        console.log("k có item");
       list.push({
         id: data.id,
         title: data.title,
@@ -38,11 +37,9 @@ const Card = ({ data, navigation, cartData }) => {
         mealImages: data.mealImages[0].source,
         quantity: 1,
       });
-      console.log("list new:", list);
       await AsyncStorage.setItem("cart", JSON.stringify(list));
       return;
     } else {
-        console.log("có item");
       const foundItem = cartData.find((item) => item.id === data.id);
       if (foundItem) {  
         foundItem.quantity += 1;
@@ -63,7 +60,6 @@ const Card = ({ data, navigation, cartData }) => {
             },
           ];
       }
-      console.log("list update new: ", list);
       await AsyncStorage.setItem("cart", JSON.stringify(list));
     }
   };

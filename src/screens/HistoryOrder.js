@@ -15,8 +15,13 @@ const HistoryOrder = ({navigation}) => {
         user_info_json != null
           ? JSON.parse(user_info_json)
           : {           
-              id: "001"           
+              id: "001",
+            isLogin: false
             };
+         if(user_info.isLogin === false){
+          setData()
+          return navigation.navigate("LoginScreen")
+         }   
       const access_token = await AsyncStorage.getItem("access_token");
       try {
         const res = await axios.get(

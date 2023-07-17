@@ -25,6 +25,7 @@ import OrderDetailStaff from "./src/screens/StaffScreens/OrderDetailStaff";
 import DashboardAdmin from "./src/screens/AdminScreens/DashboardAdmin";
 import ManageUser from "./src/screens/AdminScreens/ManageUser";
 import DepositMoney from "./src/screens/DepostiMoney";
+import ProfileUser from "./src/screens/ProfileUser";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -41,6 +42,7 @@ const BottomTabNavigators = () => {
           borderTopRightRadius: 20,
         },
       }}
+      initialRouteName="Home"
     >
       <Tab.Screen
         name="Home"
@@ -123,7 +125,7 @@ const DrawerNavigator = () => {
         headerTintColor: "black",
         sceneContainerStyle: { backgroundColor: "#ffffff", height: 1 },
       }}
-      initialRouteName="Home"
+      initialRouteName="TabHome"
     >
       <Drawer.Screen
         name="TabHome"
@@ -141,14 +143,13 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Login"
-        component={TestPage}
+        name="Profile"
+        component={ProfileUser}
         options={{
-          title: "Login",
-          headerTitle: "Test",
+          title: "My Profile",     
           drawerIcon: ({ color, focused }) => (
             <Ionicons
-              name="albums-outline"
+              name="person-circle-outline"
               size={focused ? 20 : 20}
               color={color}
             />
@@ -198,7 +199,7 @@ const StaffDrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Login"
         component={TestPage}
         options={{
@@ -212,7 +213,7 @@ const StaffDrawerNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };
@@ -232,7 +233,7 @@ const AdminDrawerNavigator = () => {
         name="TabHomeAdmin"
         component={DashboardAdmin}
         options={{
-          title: "Home",
+          title: "Dashboard",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"
@@ -246,7 +247,7 @@ const AdminDrawerNavigator = () => {
         name="ManageUser"
         component={ManageUser}
         options={{
-          title: "Manage User",
+          title: "Manage Users",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"
@@ -256,7 +257,7 @@ const AdminDrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Login"
         component={TestPage}
         options={{
@@ -270,7 +271,7 @@ const AdminDrawerNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };
@@ -284,14 +285,10 @@ export default function App() {
       <Stack.Navigator screenOptions={{ header: () => null }}>
         <Stack.Screen
           name="Drawer"
-          component={DrawerNavigator}
-          options={{
-            title: "All Categories",
-            // headerShown: true,
-            style: { backgroundColor: COLORS.gray },
-          }}
+          component={DrawerNavigator}       
         />
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="LoginScreen" component={TestPage} />
         <Stack.Screen name="OrderDetail" component={OrderDetail} />
         <Stack.Screen name="TestRedirect" component={Login} />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />

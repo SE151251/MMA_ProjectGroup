@@ -17,6 +17,10 @@ const WalletScreen = ({navigation}) => {
           : {           
               id: "001"           
             };
+            if(user_info.isLogin === false){
+              setData()
+              return navigation.navigate("LoginScreen")
+             }   
       const access_token = await AsyncStorage.getItem("access_token");
       try {
         const res = await axios.get(

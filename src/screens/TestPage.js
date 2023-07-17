@@ -20,7 +20,8 @@ const TestPage = ({navigation}) => {
       id: data.data.accountId,
       email: data.data.email,
       name: data.data.fullName,
-      role: data.data.role
+      role: data.data.role,
+      isLogin: true
     }))
     if(data.data.role === "Customer") {
       console.log("zo");   
@@ -34,6 +35,8 @@ const TestPage = ({navigation}) => {
     }
     if(data.data.role === "Store Owner"){
       console.log("admin");
+      setEmail(null)
+      setPassword(null)
       navigation.navigate("AdminHome")
       return
     }
@@ -63,6 +66,8 @@ const TestPage = ({navigation}) => {
         onChangeText={setPassword}
       />
       <Button title="Login" onPress={handleLogin} />
+
+      <Button title="Back to home" onPress={()=>navigation.navigate('Home')} />
     </View>
   );
 };
