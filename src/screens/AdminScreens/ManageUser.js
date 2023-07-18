@@ -78,13 +78,25 @@ const ManageUser = ({ navigation }) => {
     }
   };
   return (
-    <View>
-      <Text>Staff Dashboard</Text>
+    <View style={{ backgroundColor: "#52BE80" }}>
+     <Text
+        style={{
+          textAlign: "center",
+          fontSize: 24,
+          fontWeight: 700,
+          marginBottom: 30,
+          marginTop: 30,
+          color: "#fff",
+        }}
+      >
+        Manage users
+      </Text>
       {data && (
         <>
           <FlatList
             data={data}
             keyExtractor={(item) => item.AccountID}
+            style={{marginBottom: 100}}
             renderItem={({ item }) => (
               <Card
                 style={{
@@ -97,18 +109,18 @@ const ManageUser = ({ navigation }) => {
               >
                 <Card.Content>
                 <Card.Cover source={{ uri: item.Avatar }} />
-                  <Text>Account ID: {item.AccountID}</Text>
-                  <Text>FullName: {item.FullName}</Text>
-                  <Text>Address: {item.Address}</Text>
-                  <Text>Phone: {item.Phone}</Text>
-                  <Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5, marginTop: 10 }}>Account ID: {item.AccountID}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>FullName: {item.FullName}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>Address: {item.Address}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500 , marginBottom: 5}}>Phone: {item.Phone}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>
                     Gender: {item.Gender === true ? "Male" : "Female"}
                   </Text>
-                  <Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>
                     BirthDate:{" "}
                     {`${format(new Date(item.BirthDate), "dd/MM/yyyy")}`}
                   </Text>
-                  <Text>
+                  <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 20 }}>
                     Status:{" "}
                     {item.Account.Status === true ? "Active" : "InActive"}
                   </Text>
@@ -117,6 +129,7 @@ const ManageUser = ({ navigation }) => {
                       icon="trash-can-outline"
                       mode="contained"
                       onPress={() => handleDeleteUser(item.AccountID)}
+                      style={{backgroundColor:"#EC7063"}}
                     >
                       Delete user
                     </Button>

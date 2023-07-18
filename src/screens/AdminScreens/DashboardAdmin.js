@@ -87,42 +87,123 @@ const DashboardAdmin = ({ navigation }) => {
     };
   }
   return (
-    <ScrollView>
-      <Text>Staff Dashboard</Text>
+    <ScrollView style={{ backgroundColor: "#52BE80" }}>
+      <Text
+        style={{
+          textAlign: "center",
+          fontSize: 24,
+          fontWeight: 700,
+          marginBottom: 30,
+          marginTop: 30,
+          color: "#fff",
+        }}
+      >
+        ADMIN Dashboard
+      </Text>
       {data && (
         <>
           <Card
             style={{
-              marginTop: 20,
-              marginBottom: 20
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
             }}
           >
             <Card.Content>
-              <Text style={{ marginTop: 20,marginBottom: 20 }}>
-                Customers: {data.TotalCustomers}
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Customers
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalCustomers}
               </Text>
             </Card.Content>
           </Card>
-          <Card style={{ marginTop: 20,marginBottom: 20 }}>
+          <Card style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}>
             <Card.Content>
-              <Text>Meals: {data.TotalMeals} </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Meals{" "}
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalMeals}{" "}
+              </Text>
             </Card.Content>
           </Card>
 
-          <Card style={{ marginTop: 20,marginBottom: 20 }}>
+          <Card style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}>
             <Card.Content>
-              <Text>Products: {data.TotalProducts}</Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Products
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalProducts}
+              </Text>
             </Card.Content>
           </Card>
 
-          <Card style={{ marginTop: 20,marginBottom: 20 }}>
+          <Card style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}>
             <Card.Content>
-              <Text>Staffs: {data.TotalStaffs} </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Staffs
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalStaffs}{" "}
+              </Text>
             </Card.Content>
           </Card>
-          <Card style={{ marginTop: 20,marginBottom: 20 }}>
+          <Card style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}>
             <Card.Content>
-              <Text>Profits In This Month:{totalProfitsMonths}</Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Profits In This Month
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {totalProfitsMonths}
+              </Text>
             </Card.Content>
           </Card>
         </>
@@ -130,7 +211,7 @@ const DashboardAdmin = ({ navigation }) => {
       <LineChart
         data={dataChart}
         width={Dimensions.get("window").width} // Độ rộng của biểu đồ
-        height={300} // Chiều cao của biểu đồ
+        height={350} // Chiều cao của biểu đồ
         yAxisLabel="$" // Nhãn trục y
         chartConfig={{
           backgroundGradientFrom: "#ffffff", // Màu nền từ

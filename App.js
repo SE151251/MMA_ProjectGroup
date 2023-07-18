@@ -177,7 +177,7 @@ const StaffDrawerNavigator = () => {
         name="TabHomeStaff"
         component={DashboardStaff}
         options={{
-          title: "Home",
+          title: "Dashboard",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"

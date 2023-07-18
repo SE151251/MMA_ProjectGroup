@@ -77,7 +77,7 @@ const OrderDetail = ({ navigation, route }) => {
     }
   };
   return (
-    <ScrollView style={{backgroundColor:"#52BE80"}}>
+    <ScrollView style={{ backgroundColor: "#52BE80" }}>
       <View style={{ marginBottom: 20, marginTop: 30 }}>
         <Ionicons
           name="arrow-back-outline"
@@ -92,6 +92,7 @@ const OrderDetail = ({ navigation, route }) => {
           fontWeight: 700,
           textAlign: "center",
           marginBottom: 20,
+          //
         }}
       >
         Order Detail
@@ -230,7 +231,7 @@ const OrderDetail = ({ navigation, route }) => {
                     style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      textAlign:"center"
+                      textAlign: "center",
                     }}
                   >
                     {item.meal.title}
@@ -238,7 +239,7 @@ const OrderDetail = ({ navigation, route }) => {
                   <Text
                     style={{
                       fontSize: 18,
-                      fontWeight: 600,                   
+                      fontWeight: 600,
                     }}
                   >
                     {item.meal.quantity}
@@ -247,7 +248,7 @@ const OrderDetail = ({ navigation, route }) => {
                     style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      marginBottom: 10
+                      marginBottom: 10,
                     }}
                   >
                     Single price: {item.meal.price} VNĐ
@@ -256,7 +257,7 @@ const OrderDetail = ({ navigation, route }) => {
                     style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      marginBottom: 10
+                      marginBottom: 10,
                     }}
                   >
                     Quantity: {item.quantity}
@@ -265,7 +266,7 @@ const OrderDetail = ({ navigation, route }) => {
                     style={{
                       fontSize: 18,
                       fontWeight: 600,
-                      marginBottom: 10
+                      marginBottom: 10,
                     }}
                   >
                     Total Price: {item.unitPrices} VNĐ
@@ -275,7 +276,9 @@ const OrderDetail = ({ navigation, route }) => {
             )}
           />
 
-          <Text style={{textAlign:"center", fontSize: 24, fontWeight: 700}}>Order Logs</Text>
+          <Text style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}>
+            Order Logs
+          </Text>
           <FlatList
             data={data.orderTransactions}
             keyExtractor={(item) => item.id}
@@ -291,59 +294,93 @@ const OrderDetail = ({ navigation, route }) => {
                 }}
               >
                 <Card.Content>
-                  <Text style={{  fontSize: 18,
-                      fontWeight: 600,
-                      marginBottom: 10}}>
+                  <Text
+                    style={{ fontSize: 18, fontWeight: 600, marginBottom: 10 }}
+                  >
                     Log time:{" "}
                     {`${format(new Date(item.paymentTime), "dd/MM/yyyy")}`}
                   </Text>
                   {/* <Text>Status: {item.status}</Text> */}
-                  {item.status === 0 && 
-                 <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
-                 <Text style={{ fontSize: 18, fontWeight: 500 }}>Status: </Text>
-                 <Chip
-                   icon="new-box"
-                   mode="outlined"
-                   style={{ backgroundColor: "#F9E79F", width: 130 }}
-                 >
-                   New Order
-                 </Chip>
-               </View>
-                }
-                {item.status === 1 &&  <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
-                 <Text style={{ fontSize: 18, fontWeight: 500 }}>Status: </Text>
-                 <Chip
-                   icon="dots-horizontal"
-                   mode="outlined"
-                   style={{ backgroundColor: "#5DADE2", width: 120 }}
-                 >
-                   Processing
-                 </Chip>
-               </View>}
-                {item.status === 2 && (
-                  <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
-                    <Text style={{ fontSize: 18, fontWeight: 500 }}>Status: </Text>
-                    <Chip
-                      icon="checkbox-marked"
-                      mode="outlined"
-                      style={{ backgroundColor: "#2ECC71", width: 80 }}
+                  {item.status === 0 && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: 10,
+                      }}
                     >
-                      Done
-                    </Chip>
-                  </View>
-                )}
-                {item.status === 3 && 
-                 <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
-                 <Text style={{ fontSize: 18, fontWeight: 500 }}>Status: </Text>
-                 <Chip
-                   icon="cancel"
-                   mode="outlined"
-                   style={{ backgroundColor: "#EC7063", width: 90 }}
-                 >
-                   Cancel
-                 </Chip>
-               </View>
-                }
+                      <Text style={{ fontSize: 18, fontWeight: 500 }}>
+                        Status:{" "}
+                      </Text>
+                      <Chip
+                        icon="new-box"
+                        mode="outlined"
+                        style={{ backgroundColor: "#F9E79F", width: 130 }}
+                      >
+                        New Order
+                      </Chip>
+                    </View>
+                  )}
+                  {item.status === 1 && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: 500 }}>
+                        Status:{" "}
+                      </Text>
+                      <Chip
+                        icon="dots-horizontal"
+                        mode="outlined"
+                        style={{ backgroundColor: "#5DADE2", width: 120 }}
+                      >
+                        Processing
+                      </Chip>
+                    </View>
+                  )}
+                  {item.status === 2 && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: 500 }}>
+                        Status:{" "}
+                      </Text>
+                      <Chip
+                        icon="checkbox-marked"
+                        mode="outlined"
+                        style={{ backgroundColor: "#2ECC71", width: 80 }}
+                      >
+                        Done
+                      </Chip>
+                    </View>
+                  )}
+                  {item.status === 3 && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: 500 }}>
+                        Status:{" "}
+                      </Text>
+                      <Chip
+                        icon="cancel"
+                        mode="outlined"
+                        style={{ backgroundColor: "#EC7063", width: 90 }}
+                      >
+                        Cancel
+                      </Chip>
+                    </View>
+                  )}
                 </Card.Content>
               </Card>
             )}

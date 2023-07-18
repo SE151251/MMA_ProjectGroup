@@ -1,13 +1,12 @@
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { ScrollView, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Card } from "react-native-paper";
-import { format } from 'date-fns';
 import { useIsFocused } from "@react-navigation/native";
-const DashboardStaff = ({navigation}) => {
+const DashboardStaff = ({ navigation }) => {
   const [data, setData] = useState();
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   useEffect(() => {
     const loadDashboardAPI = async () => {
       const access_token = await AsyncStorage.getItem("access_token");
@@ -26,62 +25,139 @@ const DashboardStaff = ({navigation}) => {
         console.error("API error:", error);
       }
     };
-    if(isFocused){
-    loadDashboardAPI();
+    if (isFocused) {
+      loadDashboardAPI();
     }
-  },[isFocused]);
+  }, [isFocused]);
   return (
-    <View>
-      <Text>Staff Dashboard</Text>
-    {data &&
-   
-      <Card
+    <ScrollView style={{ backgroundColor: "#52BE80" }}>
+      <Text
         style={{
-          paddingBottom: 10,
-          paddingTop: 10,
-          marginBottom: 20,
-          marginLeft: 20,
-          marginRight: 20,
+          textAlign: "center",
+          fontSize: 24,
+          fontWeight: 700,
+          marginBottom: 30,
+          marginTop: 30,
+          color:"#fff"
         }}
-        // onPress={() => {
-        //   navigation.navigate("", {        
-        //    orderId: item.id
-        //   });
-        // }}
       >
-        <Card.Content>
-          <Text
-            style={{ marginTop: 20 }}
+        STAFF Dashboard
+      </Text>
+      {data && (
+        <>
+          <Card
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
           >
-           Product: {data.TotalProducts}
-          </Text>
-
-        </Card.Content>
-        <Card.Content>
-          <Text>Meals: {data.TotalMeals}</Text>
-         
-        </Card.Content>
-        <Card.Content>
-         
-         
-          <Text>Done orders: {data.TotalDoneOrders}</Text>
-         
-        </Card.Content>
-        <Card.Content>
-         
-          <Text>New orders: {data.TotalNewOrders} </Text>     
-         
-        </Card.Content>
-        <Card>
-        <Card.Content>
-        
-          <Text>Profits In This Month: {data.TotalMonthProfits} </Text>  
-        </Card.Content>
-        </Card>
-      </Card>
-    }
-    
-    </View>
+            <Card.Content>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Products
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalProducts}
+              </Text>
+            </Card.Content>
+          </Card>
+          <Card
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
+          >
+            <Card.Content>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Total Meals
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalMeals}
+              </Text>
+            </Card.Content>
+          </Card>
+          <Card
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
+          >
+            <Card.Content>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Done orders
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalDoneOrders}
+              </Text>
+            </Card.Content>
+          </Card>
+          <Card
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
+          >
+            <Card.Content>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                New orders
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalNewOrders}{" "}
+              </Text>
+            </Card.Content>
+          </Card>
+          <Card
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
+          >
+            <Card.Content>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                Profits In This Month
+              </Text>
+              <Text
+                style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+              >
+                {data.TotalMonthProfits}{" "}
+              </Text>
+            </Card.Content>
+          </Card>
+        </>
+      )}
+    </ScrollView>
   );
 };
 
