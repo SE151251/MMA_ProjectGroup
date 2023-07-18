@@ -14,7 +14,12 @@ import COLORS from "../constants/colors";
 import { IconButton, MD3Colors } from "react-native-paper";
 const width = Dimensions.get("screen").width / 2 - 30;
 
-const FavoriteItem = ({ data, navigation, removeDataFromStorage, updateQuantityCart }) => {
+const FavoriteItem = ({
+  data,
+  navigation,
+  removeDataFromStorage,
+  updateQuantityCart,
+}) => {
   const [contentWidth, setContentWidth] = useState(0);
   const windowWidth = useWindowDimensions().width;
   useEffect(() => {
@@ -36,34 +41,40 @@ const FavoriteItem = ({ data, navigation, removeDataFromStorage, updateQuantityC
             source={{ html: data.title }}
           />
           <Text style={styles.text}>Single priece: {data.price} VNĐ</Text>
-        
-         
-  <View style={{flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}}>
-    <Text style={styles.text}>Quantity:</Text>
-  <IconButton
-    icon="plus-box-outline"
-    iconColor={MD3Colors.neutral100}
-    size={20}
-    onPress={() => updateQuantityCart('Plus', data.id)}
-  />
-          <Text style={styles.text}> {data.quantity}</Text>
-    {data.quantity >1 && <IconButton
-    icon="minus-box-outline"
-    iconColor={MD3Colors.neutral100}
-    size={20}
-    onPress={() => updateQuantityCart('Minus', data.id)}
-  />}
-  </View>
-   
-  
-     </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.text}>Quantity:</Text>
+            <IconButton
+              icon="plus-box-outline"
+              iconColor={MD3Colors.neutral100}
+              size={20}
+              onPress={() => updateQuantityCart("Plus", data.id)}
+            />
+            <Text style={styles.text}> {data.quantity}</Text>
+            {data.quantity > 1 && (
+              <IconButton
+                icon="minus-box-outline"
+                iconColor={MD3Colors.neutral100}
+                size={20}
+                onPress={() => updateQuantityCart("Minus", data.id)}
+              />
+            )}
+          </View>
+        </View>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => removeDataFromStorage(data.id)}
+          style={{marginRight: 10}}
         >
           <FontAwesome
             name="remove"
-            size={35}
+            size={30}
             color="#ff007f"
             style={styles.icon}
           />
@@ -77,13 +88,13 @@ export default FavoriteItem;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    height: 250,
+    height: 240,
     backgroundColor: COLORS.light,
     marginHorizontal: 2,
     borderRadius: 10,
     marginVertical: 20,
     // overflow: "hidden",
-    width: 350,
+    width: 330,
   },
   imageItem: {
     position: "absolute",

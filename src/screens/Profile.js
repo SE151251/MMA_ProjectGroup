@@ -23,9 +23,15 @@ const Profile = ({ navigation }) => {
   const fetchUserProfile = async () => {
     try {
       const user_info_json = await AsyncStorage.getItem("user_info");
-      const user_data = JSON.parse(user_info_json)
-      if (user_info.isLogin === false) {
-        setProfileData();
+      const user_data =
+      user_info_json != null
+        ? JSON.parse(user_info_json)
+        : {
+            id: "0",
+            isLogin: false,
+          };
+      if (user_data.isLogin === false) {
+        // setProfileData();
         return navigation.navigate("LoginScreen");
       }
       const access_token = await AsyncStorage.getItem("access_token");

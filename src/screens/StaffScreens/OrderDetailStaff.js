@@ -6,6 +6,7 @@ import { Button, Card, Chip } from "react-native-paper";
 import { format } from "date-fns";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
+import  Toast  from "react-native-toast-message";
 const OrderDetail = ({ navigation, route }) => {
   const [data, setData] = useState();
   const isFocused = useIsFocused();
@@ -33,8 +34,6 @@ const OrderDetail = ({ navigation, route }) => {
     }
   }, [isFocused]);
   const handleClickButton = (type) => {
-    // var typeAlert;
-    // if(type === "Processing") typeAlert=`Are you sure?", "You really want to ${type} this order?`
     Alert.alert("Are you sure?", `You really want to ${type} this order?`, [
       {
         text: "No",
@@ -50,14 +49,6 @@ const OrderDetail = ({ navigation, route }) => {
     ]);
   };
   const handleStatusOrder = async (type) => {
-    // const user_info_json = await AsyncStorage.getItem("user_info");
-    // const user_info =
-    //   user_info_json != null
-    //     ? JSON.parse(user_info_json)
-    //     : {
-    //         id: "001"
-    //       };
-
     try {
       const access_token = await AsyncStorage.getItem("access_token");
       console.log("access token: ", access_token);
@@ -71,6 +62,11 @@ const OrderDetail = ({ navigation, route }) => {
           }
         );
         navigation.goBack();
+        Toast.show({
+          type: "success",
+          text1: "Message",
+          text2: "Update order successfully",
+        });
         return;
       }
       if (type === "Processing") {
@@ -84,6 +80,11 @@ const OrderDetail = ({ navigation, route }) => {
           }
         );
         navigation.goBack();
+        Toast.show({
+          type: "success",
+          text1: "Message",
+          text2: "Update order successfully",
+        });
         return;
       }
       if (type === "Done") {
@@ -99,10 +100,20 @@ const OrderDetail = ({ navigation, route }) => {
         );
         console.log("success");
         navigation.goBack();
+        Toast.show({
+          type: "success",
+          text1: "Message",
+          text2: "Update order successfully",
+        });
         return;
       }
     } catch (error) {
       console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "Message",
+        text2: "Update Failed",
+      });
     }
   };
   return (

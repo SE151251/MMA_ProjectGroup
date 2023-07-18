@@ -15,6 +15,7 @@ import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HTML from "react-native-render-html";
 import { FontAwesome5 } from "@expo/vector-icons";
+import  Toast  from "react-native-toast-message";
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
@@ -64,6 +65,11 @@ const Card = ({ data, navigation, cartData, setCartData }) => {
       }     
     }
     await AsyncStorage.setItem("cart", JSON.stringify(list));
+    Toast.show({
+      type: "success",
+      text1: "Message",
+      text2: "Add to cart successfully",
+    });
   };
 
   const changeFavorite = () => {

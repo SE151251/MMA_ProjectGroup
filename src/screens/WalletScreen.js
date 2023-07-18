@@ -34,7 +34,7 @@ const WalletScreen = ({navigation}) => {
         );       
         setData(res.data);
       } catch (error) {
-        console.error("API error:", error);
+        console.log("API error:", error);
       }
     };
     if(isFocused){

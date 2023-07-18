@@ -6,6 +6,7 @@ import { Button, Card, Chip } from "react-native-paper";
 import { format } from "date-fns";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
+import  Toast  from "react-native-toast-message";
 const OrderDetail = ({ navigation, route }) => {
   const [data, setData] = useState();
   const isFocused = useIsFocused();
@@ -30,7 +31,7 @@ const OrderDetail = ({ navigation, route }) => {
         );
         setData(res.data);
       } catch (error) {
-        console.error("API error:", error);
+        console.log("API error:", error);
       }
     };
     if (isFocused) {
@@ -71,9 +72,19 @@ const OrderDetail = ({ navigation, route }) => {
         }
       );
       navigation.goBack();
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Cancel order successfully",
+      });
       return;
     } catch (error) {
       console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "Message",
+        text2: "Cancel order failed!",
+      });
     }
   };
   return (

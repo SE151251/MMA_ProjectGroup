@@ -284,7 +284,9 @@ export default function App() {
     <PaperProvider>
     <NavigationContainer>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
-      <Stack.Navigator screenOptions={{ header: () => null }}>
+      <Stack.Navigator 
+       screenOptions={{ headerShown: false, }}
+      >
         <Stack.Screen
           name="Drawer"
           component={DrawerNavigator}       

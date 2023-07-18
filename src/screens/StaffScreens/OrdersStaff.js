@@ -45,7 +45,7 @@ const DashboardStaff = ({ navigation }) => {
       {data && (
         <FlatList
           data={data.reverse().slice(0, 20)}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.ID}
           style={{marginBottom: 100}}
           renderItem={({ item }) => (
             <Card

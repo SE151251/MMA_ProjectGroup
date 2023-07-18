@@ -24,6 +24,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
+import  Toast  from "react-native-toast-message";
 
 const DetailsScreen = ({ navigation, route }) => {
   const [scaleValue, setScaleValue] = useState(new Animated.Value(1));
@@ -65,6 +66,11 @@ const DetailsScreen = ({ navigation, route }) => {
         quantity: 1,
       });
       await AsyncStorage.setItem("cart", JSON.stringify(list));
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Add to cart successfully",
+      });
       return;
     } else {
 
@@ -88,6 +94,11 @@ const DetailsScreen = ({ navigation, route }) => {
           ];
       }
       await AsyncStorage.setItem("cart", JSON.stringify(list));
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Add to cart successfully",
+      });
     }
   };
   const changeFavorite = () => {
@@ -113,7 +124,7 @@ const DetailsScreen = ({ navigation, route }) => {
           color="black"
           onPress={() => navigation.goBack()}
         />
-        <TouchableWithoutFeedback onPress={changeFavorite}>
+        <TouchableWithoutFeedback onPress={()=>{navigation.navigate("Cart")}}>
           <Animated.View style={[{ transform: [{ scale: scaleValue }] }]}>
             <FontAwesome5
               style={{ marginLeft: 2.5, marginRight: 5 }}

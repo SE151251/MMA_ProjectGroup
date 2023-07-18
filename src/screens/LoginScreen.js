@@ -94,6 +94,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import COLORS from '../constants/colors'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import  Toast  from 'react-native-toast-message';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -171,6 +172,11 @@ const Login = ({ navigation }) => {
     if(data.data.role === "Customer") {
       console.log("zo");   
       navigation.navigate("Home")
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Login successfully",
+      });
       return
     }
     if(data.data.role === "Staff"){
@@ -178,6 +184,11 @@ const Login = ({ navigation }) => {
       setEmail('')
       setPassword('')
       navigation.navigate("StaffHome")
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Login successfully",
+      });
       return
     }
     if(data.data.role === "Store Owner"){
@@ -185,13 +196,23 @@ const Login = ({ navigation }) => {
       setEmail('')
       setPassword('')
       navigation.navigate("AdminHome")
+      Toast.show({
+        type: "success",
+        text1: "Message",
+        text2: "Login successfully",
+      });
       return
     }
     } catch (error) {
       // Xử lý lỗi khi đăng nhập thất bại
       if(error.response && error.response.data){
-        console.error(error.response.data.Message[0].DescriptionError[0]);
+        console.log(error.response.data.Message[0].DescriptionError[0]);
       }
+      Toast.show({
+        type: "error",
+        text1: "Message",
+        text2: "Login Failed! Please check your email and password again!",
+      });
     }
 
     }

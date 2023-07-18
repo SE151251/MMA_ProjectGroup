@@ -40,6 +40,8 @@ const CustomSideMenu = (props) => {
   ];
   const handleLogout = async () => {
     await AsyncStorage.removeItem("user_info");
+    await AsyncStorage.removeItem("access_token");
+    await AsyncStorage.removeItem("refresh_token");
     setDataUser({
       id: "001",
       name: "User",
@@ -51,6 +53,8 @@ const CustomSideMenu = (props) => {
   };
   const handleLogin = async () => {
     await AsyncStorage.removeItem("user_info");
+    await AsyncStorage.removeItem("access_token");
+    await AsyncStorage.removeItem("refresh_token");
     setDataUser({
       id: "001",
       name: "User",
@@ -121,7 +125,7 @@ const CustomSideMenu = (props) => {
           <>
             <TouchableOpacity activeOpacity={0.5} onPress={handleLogin}>
               <View style={styles.item}>
-                <Ionicons name="albums-outline" size={20} color="black" />
+                <Ionicons name="enter-outline" size={20} color="black" />
                 <Text style={styles.textItem}>Login</Text>
               </View>
             </TouchableOpacity>

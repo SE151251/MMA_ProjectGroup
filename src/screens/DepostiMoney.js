@@ -32,7 +32,7 @@ const DepositMoney = ({navigation}) => {
     } catch (error) {
       console.log(error.response)
       if(error.response && error.response.data){
-        console.error(error.response.data.Message[0].DescriptionError[0]);
+        console.log(error.response.data.Message[0].DescriptionError[0]);
       }
     }
   };

@@ -59,7 +59,7 @@ const FavoriteScreen = ({ navigation }) => {
         {
           text: "Yes",
           onPress: () => {
-            AsyncStorage.clear();
+            AsyncStorage.removeItem("cart");
             setFavData([]);
             setShowClearAll(false);
           },
@@ -129,15 +129,20 @@ const FavoriteScreen = ({ navigation }) => {
           },
         }
       );
-      console.log(res.data);
+      // console.log(res.data);
       Toast.show({
         type: "success",
         text1: "Message",
         text2: "Checkout successfully",
       });
-      await AsyncStorage.clear();
+      await AsyncStorage.removeItem("cart");
       navigation.navigate("Home");
     } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Message",
+        text2: "Checkout failed!",
+      });
       console.log(error.response.data);
     }
   };
