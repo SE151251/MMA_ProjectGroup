@@ -18,7 +18,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const width = Dimensions.get("screen").width / 2 - 30;
 
-const Card = ({ data, navigation, cartData }) => {
+const Card = ({ data, navigation, cartData, setCartData }) => {
   const [scaleValue, setScaleValue] = useState(new Animated.Value(1));
   const [contentWidth, setContentWidth] = useState(0);
   const windowWidth = useWindowDimensions().width;
@@ -37,16 +37,17 @@ const Card = ({ data, navigation, cartData }) => {
         mealImages: data.mealImages[0].source,
         quantity: 1,
       });
-      await AsyncStorage.setItem("cart", JSON.stringify(list));
-      return;
+      setCartData(list)
+      // await AsyncStorage.setItem("cart", JSON.stringify(list));
+      // return;
     } else {
       const foundItem = cartData.find((item) => item.id === data.id);
-      if (foundItem) {  
+      if (foundItem) { 
         foundItem.quantity += 1;
         list = [
             ...cartData,
-          ];
-          console.log("list update quantity:", list);   
+          ];  
+          setCartData(list)      
       }
       else{
         list = [
@@ -59,9 +60,10 @@ const Card = ({ data, navigation, cartData }) => {
               quantity: 1
             },
           ];
-      }
-      await AsyncStorage.setItem("cart", JSON.stringify(list));
+          setCartData(list)     
+      }     
     }
+    await AsyncStorage.setItem("cart", JSON.stringify(list));
   };
 
   const changeFavorite = () => {

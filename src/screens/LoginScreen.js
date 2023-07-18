@@ -153,8 +153,7 @@ const Login = ({ navigation }) => {
       //       setLoginError('')
       //     }
       //   })
-          try {
-      console.log('Login submit:', email, password);
+    try {
       const data = await axios.post(`https://bmosapplication.azurewebsites.net/odata/authentications/login`,
       { 
         email: email,
@@ -241,7 +240,7 @@ const Login = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() => handleLogin()}
-          style={{ backgroundColor: "#fa9737", padding: 10, borderRadius: 20, marginHorizontal: 30, marginVertical: 10, borderWidth: 1, borderColor: 'black' }}
+          style={{ backgroundColor: "#F7DC6F", padding: 10, borderRadius: 20, marginHorizontal: 30, marginVertical: 10, borderWidth: 1, borderColor: 'black' }}
         >
           <Text style={{ color: 'black', textAlign: 'center', fontSize: 20, }}>Login</Text>
         </TouchableOpacity>
@@ -273,7 +272,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: COLORS.lightOrange
+    // backgroundColor: COLORS.lightOrange
+    backgroundColor: "#52BE80"
   },
   inputContainer: {
     flexDirection: 'row',

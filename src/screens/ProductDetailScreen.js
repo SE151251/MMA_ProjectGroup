@@ -62,7 +62,7 @@ import { Chip } from "react-native-paper";
                 source={{ uri: dataFetch.productImages[0].source }}
               />
             </View>
-            <View style={styles.detailContainer}>              
+            <ScrollView style={styles.detailContainer}>              
             <Text
                   style={{
                     fontSize: 24,
@@ -84,9 +84,11 @@ import { Chip } from "react-native-paper";
             </Chip>
               <View style={styles.detailHeader}>
               <Text style={{fontSize:24, fontWeight: 700}}>Product Detail</Text>
-                   <HTML baseStyle={{fontSize:"16px"}} contentWidth={contentWidth} source={{ html: dataFetch.description }} />
+              <View style={{width: 340}}>
+              <HTML baseStyle={{fontSize:"16px"}} contentWidth={contentWidth} source={{ html: dataFetch.description }} />            
               </View>
-            </View>
+              </View>
+            </ScrollView>
           </>
         )}
       

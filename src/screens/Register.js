@@ -456,7 +456,7 @@ const Register = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => handleRegister()}
             style={{
-              backgroundColor: "#fa9737",
+              backgroundColor: "#F7DC6F",
               padding: 10,
               borderRadius: 20,
               marginHorizontal: 30,
@@ -488,7 +488,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-    backgroundColor: COLORS.lightOrange,
+    // backgroundColor: COLORS.lightOrange,
+    backgroundColor: "#52BE80",
     paddingVertical: 30,
   },
   inputContainer: {

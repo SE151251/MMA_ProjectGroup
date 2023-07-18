@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Platform,
@@ -9,32 +9,60 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+import {getUserProfile} from "../services/ProfileService";
 import { FontAwesome, Foundation } from "@expo/vector-icons";
 import COLORS from "../constants/colors";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = ({ navigation }) => {
-  const [email, setEmail] = useState("tm@gmail.com");
-  const [fullName, setFullName] = useState("minh quan");
-  const [address, setAddress] = useState("asdasdasd");
-  const [phone, setPhone] = useState("1234567891");
-  const [birthday, setBirthday] = useState("1/1/2000");
-  const [image, setImage] = useState(
-    "https://i.pinimg.com/originals/25/13/3d/25133df91301e29bcd36eec3949009ff.jpg"
-  );
-  const [gender, setGender] = useState(true);
+  const isFocused = useIsFocused();
+  const [profileData, setProfileData] = useState(null);
+  const [dateText, setDateText] = useState('')
+
+  const fetchUserProfile = async () => {
+    try {
+      const user_info_json = await AsyncStorage.getItem("user_info");
+      const user_data = JSON.parse(user_info_json)
+      if (user_info.isLogin === false) {
+        setProfileData();
+        return navigation.navigate("LoginScreen");
+      }
+      const access_token = await AsyncStorage.getItem("access_token");
+      const data = await getUserProfile(user_data.id, access_token)
+      let tempDate = new Date(data.BirthDate);
+      let formattedDate =
+        tempDate.getDate() +
+        "/" +
+        (tempDate.getMonth() + 1) +
+        "/" +
+        tempDate.getFullYear();
+
+
+      setProfileData(data);
+      setDateText(formattedDate)
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+
+    useEffect(() => {
+      if (isFocused) {
+        
+        fetchUserProfile();
+      }
+    }, [isFocused]);
+
 
   const handleEditProfile = () => {
     const data = {
-      email: email,
-      fullName: fullName,
-      address: address,
-      phone: phone,
-      birthday: birthday,
-      image: image,
-      gender: gender,
-    };
+      ...profileData,
+      DateText: dateText,
+    }
     navigation.navigate("EditProfile", { data });
   };
+
 
   return (
     <KeyboardAvoidingView
@@ -42,50 +70,32 @@ const Profile = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
     >
+
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <View style={{ alignItems: "center" }}>
-            <Image source={{ uri: image }} style={styles.image} />
-            <Text
-              style={{ fontSize: 30, fontWeight: "bold", marginBottom: 10 }}
-            >
-              Tran Minh Quan
-            </Text>
-          </View>
+        {profileData !== null ?
+          <View style={styles.container}>
+            <View style={{ alignItems: "center" }}>
+              <Image source={{ uri: profileData.Avatar }} style={styles.image} />
+              <Text
+                style={{ fontSize: 30, fontWeight: "bold", marginBottom: 10 }}
+              >
+                {profileData.FullName}
+              </Text>
+            </View>
 
-          <View style={styles.fieldsContainer}>
-            <FontAwesome
-              name="user"
-              size={24}
-              color="black"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={styles.fieldsText}>mquan@gmail.com</Text>
-          </View>
 
-          <View style={styles.fieldsContainer}>
-            <FontAwesome
-              name="address-book-o"
-              size={24}
-              color="black"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={styles.fieldsText}>Abdc 12/122 </Text>
-          </View>
+            <View style={styles.fieldsContainer}>
+              <FontAwesome
+                name="address-book-o"
+                size={24}
+                color="black"
+                style={{ marginRight: 10 }}
+              />
+              <Text style={styles.fieldsText}>{profileData.Address}</Text>
+            </View>
 
-          <View style={styles.fieldsContainer}>
-            <FontAwesome
-              name="phone"
-              size={24}
-              color="black"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={styles.fieldsText}>0123451587</Text>
-          </View>
 
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
             <View style={styles.fieldsContainer}>
               <FontAwesome
                 name="calendar"
@@ -93,62 +103,92 @@ const Profile = ({ navigation }) => {
                 color="black"
                 style={{ marginRight: 10 }}
               />
-              <Text style={styles.fieldsText}>22/11/2000</Text>
+              <Text style={styles.fieldsText}>{dateText}</Text>
             </View>
 
-            {gender === true ? (
-              <View style={styles.fieldsContainer}>
-                <Text style={styles.fieldsText}>Gender: </Text>
-                <Foundation name="male-symbol" size={30} color="blue" />
-              </View>
-            ) : (
-              <View style={styles.fieldsContainer}>
-                <Foundation name="female-symbol" size={30} color="pink" />
-              </View>
-            )}
-          </View>
 
-          <View style={{ flexDirection: "row-reverse", marginBottom: 15 }}>
-            <TouchableOpacity
-              onPress={handleEditProfile}
-              style={{
-                backgroundColor: "white",
-                padding: 5,
-                borderWidth: 1,
-                borderColor: "black",
-                alignItems: "center",
-              }}
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  color: "black",
-                  textAlign: "center",
-                  fontSize: 15,
-                }}
-              >
+              <View style={styles.fieldsContainer}>
                 <FontAwesome
-                  name="pencil-square-o"
+                  name="phone"
                   size={24}
                   color="black"
                   style={{ marginRight: 10 }}
-                />{" "}
-                Edit Profile
-              </Text>
+                />
+                <Text style={styles.fieldsText}>{profileData.Phone}</Text>
+              </View>
+
+
+              {profileData.Gender === true ? (
+                <View style={styles.fieldsContainer}>
+                  <Text style={styles.fieldsText}>Gender: </Text>
+                  <Foundation name="male-symbol" size={30} color="blue" />
+                </View>
+              ) : (
+                <View style={styles.fieldsContainer}>
+                  <Foundation name="female-symbol" size={30} color="pink" />
+                </View>
+              )}
+            </View>
+            <View style={{ flexDirection: "row-reverse", marginBottom: 15 }}>
+              <TouchableOpacity
+                onPress={handleEditProfile}
+                style={{
+                  backgroundColor: "white",
+                  padding: 5,
+                  borderWidth: 1,
+                  borderColor: "black",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "black",
+                    textAlign: "center",
+                    fontSize: 15,
+                  }}
+                >
+                  <FontAwesome
+                    name="pencil-square-o"
+                    size={24}
+                    color="black"
+                    style={{ marginRight: 10 }}
+                  />{" "}
+                  Edit Profile
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ backgroundColor: "#fa9737", borderWidth: 1, borderRadius: 20, }}
+            >
+              <Text style={{ paddingHorizontal: 25, fontWeight: 'bold', paddingVertical: 10, textAlign: 'center', fontSize: 20, }}>Go Back</Text>
             </TouchableOpacity>
+
+
           </View>
-        </View>
+          :
+          <View style={{ alignItems: 'center' }}>
+            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Profile not found</Text>
+          </View>
+        }
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
     backgroundColor: COLORS.lightOrange,
-    paddingVertical: 30,
+    paddingVertical: 50,
   },
   fieldsText: {
     fontSize: 20,
@@ -172,4 +212,10 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default Profile;
+
+
+
+
+

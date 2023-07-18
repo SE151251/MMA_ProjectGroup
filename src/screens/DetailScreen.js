@@ -151,11 +151,14 @@ const DetailsScreen = ({ navigation, route }) => {
             >
               Meal description:
             </Text>
+            <View style={{width: 340}}>
               <HTML
                 baseStyle={{ fontSize: "18px", fontWeight: 700}}
                 contentWidth={contentWidth}
                 source={{ html: dataFetch.description }}
+                
               />
+              </View>
             </View>                     
             <View
               scrollEnabled={true}
@@ -166,6 +169,7 @@ const DetailsScreen = ({ navigation, route }) => {
               <View style={styles.aboutContainer}>
                 <FlatList
                   data={dataFetch.productMeals}
+                  style={{marginBottom: 20}}
                   scrollEnabled={false}
                   renderItem={({ item, index }) => (
                     <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", item.product.id)}>
@@ -202,7 +206,7 @@ const DetailsScreen = ({ navigation, route }) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Text style={{ marginTop: 5, fontSize: 15 }}>
+                          <Text style={{ marginTop: 5, fontSize: 15, width: 200 }}>
                             {item.product.name}
                           </Text>
                           <Text style={{ marginTop: 5, fontSize: 15 }}>
@@ -220,8 +224,8 @@ const DetailsScreen = ({ navigation, route }) => {
           </ScrollView>
           <Button
               mode="contained-tonal"
-              style={{ borderRadius: 20 }}
-              buttonColor="#FF7F50"
+              style={{ borderRadius: 20, margin: 20 }}
+              buttonColor="#F7DC6F"
               onPress={changeFavorite}
               icon="cart-plus"
             >
@@ -238,7 +242,8 @@ export default DetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightOrange,
+    // backgroundColor: COLORS.lightOrange,
+    backgroundColor: "#52BE80"
   },
   header: {
     flexDirection: "row",
@@ -262,8 +267,8 @@ const styles = StyleSheet.create({
     flex: 0.7,
     backgroundColor: COLORS.light,
     marginHorizontal: 5,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderRadius: 20,
+    // borderTopRightRadius: 20,
     marginTop: 15,
   },
   detailHeader: {

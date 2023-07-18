@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { Text } from 'react-native-paper';
 const DepositMoney = ({navigation}) => {
-  const [email, setEmail] = useState(0);
-  const [password, setPassword] = useState('');
+  const [amount, setAmount] = useState(0);
 
-  const handleLogin = async () => {
+  const handleSubmit = async () => {
     try {
         const user_info_json = await AsyncStorage.getItem("user_info");
         const user_info =
@@ -15,24 +15,20 @@ const DepositMoney = ({navigation}) => {
             : {           
                 id: "001"           
               };
-        const access_token = await AsyncStorage.getItem("access_token");
-      console.log('Login submit:', email, password);
+      const access_token = await AsyncStorage.getItem("access_token");
       const data = await axios.post(`https://bmosapplication.azurewebsites.net/odata/WalletTransactions`,
       { 
         email: user_info.email,
-        amount: email,
+        amount: amount,
        redirectUrl: "https://momo.vn/"
     }, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       })
-    console.log("zo đây", data.data);
-    navigation.navigate("TestRedirect",{
+    navigation.navigate("ShowPageMomo",{
       url: data.data.PayUrl
     })
-   
-    
     } catch (error) {
       console.log(error.response)
       if(error.response && error.response.data){
@@ -43,21 +39,24 @@ const DepositMoney = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Text 
+      style={{textAlign:"center", fontSize:24, fontWeight: 900,
+    marginBottom: 30
+    }}
+      >Deposit money to your account</Text>
       <TextInput
         style={styles.input}
-        placeholder="Money"
+        placeholder="Type your Money to deposit"
         keyboardType="number-pad"
         autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
+        value={amount}
+        onChangeText={setAmount}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Type Agree to deposit"      
-        value={password}
-        onChangeText={setPassword}
-      />
-      <Button title="Login" onPress={handleLogin} />
+      <Button title="Submit" onPress={handleSubmit} />
+      <View style={{marginTop: 20}}>
+      <Button  title="Back to your wallet" onPress={()=>navigation.navigate('WalletCustomer')} />
+      </View>
+      
     </View>
   );
 };
@@ -67,13 +66,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 16,
+    backgroundColor:"#AED6F1"
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    marginBottom: 20,
+    paddingHorizontal: 8
   },
 });
 
