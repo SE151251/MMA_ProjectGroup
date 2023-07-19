@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import Card from "../components/Card";
+import CardProduct from "../components/CardProduct";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -13,42 +14,57 @@ const HomeScreen = ({ navigation }) => {
   const [cartData, setCartData] = useState([]);
   const [dataFetch, setDataFetch] = useState();
   const [dataProducts, setDataProducts] = useState();
+  const [dataMeals, setDataMeals] = useState();
+  const [isMeal, setIsMeal] = useState(true)
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    getFromStorage();
     const fetchListMealsActive = async () => {
       try {
         const data = await axios.get(
           "https://bmosapplication.azurewebsites.net/odata/Meals/Active/Meal"
         );
-        setDataFetch(data.data);
+        setDataMeals(data.data);
+        setDataFetch(data.data)
       } catch (error) {
         console.log(error.response.data);
       }
     };
     const fetchListProductsActive = async () => {
       try {
-        const data = await axios.get(
+        const dataProducts = await axios.get(
           "https://bmosapplication.azurewebsites.net/odata/Products/Active/Product"
         );
-        setDataProducts(data.data);
+        setDataProducts(dataProducts.data);
       } catch (error) {
         console.log(error.response.data);
       }
     };
-    fetchListMealsActive();
-    fetchListProductsActive();
+    const checkUser = async () => {
+      const user_info_json = await AsyncStorage.getItem("user_info");
+      const user_info =
+        user_info_json != null
+          ? JSON.parse(user_info_json)
+          : {
+             role:"Customer"
+            };
+      if (user_info.role === "Staff") {
+        return navigation.navigate("StaffHome")     
+      }
+      if (user_info.role === "Store Owner") {
+        return  navigation.navigate("AdminHome")
+      }
+    }
+    if(isFocused){
+      checkUser();
+      fetchListMealsActive();
+      fetchListProductsActive();
+    }
+     
   }, [isFocused]);
-
-  const getFromStorage = async () => {
-    const data = await AsyncStorage.getItem("cart");
-    setCartData(data != null ? JSON.parse(data) : []);
-  };
 
   const changeSearch = (query) => {
     setSearchQuery(query);
-    // console.log(searchQuery);
   };
 
   return (
@@ -73,11 +89,15 @@ const HomeScreen = ({ navigation }) => {
             placeholder="Search"
             style={styles.textInput}
             onChangeText={changeSearch}
+            value={searchQuery}
           />
         </View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          setIsMeal(true)
+          //setDataFetch(dataMeals)
+        }}>
         <Text
           style={{
             backgroundColor: "#012A4A",
@@ -94,7 +114,10 @@ const HomeScreen = ({ navigation }) => {
           Meals
         </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          setIsMeal(false)
+          //setDataFetch(dataProducts)
+          }}>
         <Text
           style={{
             backgroundColor: "#012A4A",
@@ -113,14 +136,15 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       {dataFetch && (
-        <FlatList
+        isMeal ?
+         ( <FlatList
           showsVerticalScrollIndicator={false}
           columnWrapperStyle={{
             justifyContent: "space-between",
           }}
           style={{marginTop: 15}}
           numColumns={2}
-          data={dataFetch.filter((item) =>
+          data={dataMeals.filter((item) =>
             item.title.toLowerCase().includes(searchQuery.toLowerCase())
           )}
           renderItem={({ item }) => (
@@ -131,8 +155,31 @@ const HomeScreen = ({ navigation }) => {
               setCartData={setCartData}
             />
           )}
-        />
-      )}
+        />) 
+        
+          : 
+          (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              columnWrapperStyle={{
+                justifyContent: "space-between",
+              }}
+              style={{marginTop: 15}}
+              numColumns={2}
+              data={dataProducts.filter((item) =>
+                item.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )}
+              renderItem={({ item }) => (
+                <CardProduct
+                  navigation={navigation}
+                  data={item}
+                  cartData={cartData}
+                  setCartData={setCartData}
+                />
+              )}
+            />
+          )
+              )}
     </SafeAreaView>
   );
 };
