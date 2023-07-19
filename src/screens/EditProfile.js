@@ -344,9 +344,10 @@ const EditProfile = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={handleEditProfile}
               style={{
-                backgroundColor: "#06ba0f",
+                backgroundColor: "#023E8A",
                 borderWidth: 1,
                 borderRadius: 20,
+                borderColor: "#023E8A"
               }}
             >
               <Text
@@ -356,7 +357,8 @@ const EditProfile = ({ route, navigation }) => {
                   paddingHorizontal: 25,
                   paddingVertical: 10,
                   textAlign: "center",
-                  fontSize: 20,
+                  fontSize: 18,
+                  fontWeight: "bold"
                 }}
               >
                 Confirm
@@ -365,9 +367,10 @@ const EditProfile = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={{
-                backgroundColor: "#e3092d",
+                backgroundColor: "#ef476f",
                 borderWidth: 1,
                 borderRadius: 20,
+                borderColor: "#ef476f"
               }}
             >
               <Text
@@ -376,7 +379,8 @@ const EditProfile = ({ route, navigation }) => {
                   paddingHorizontal: 25,
                   paddingVertical: 10,
                   textAlign: "center",
-                  fontSize: 20,
+                  fontSize: 18,
+                  fontWeight: "bold"
                 }}
               >
                 Cancel

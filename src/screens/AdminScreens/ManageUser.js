@@ -79,7 +79,7 @@ const ManageUser = ({ navigation }) => {
     }
   };
   return (
-    <View style={{ backgroundColor: "#52BE80" }}>
+    <View style={{ backgroundColor: "#CAF0F8" }}>
      <Text
         style={{
           textAlign: "center",
@@ -87,7 +87,7 @@ const ManageUser = ({ navigation }) => {
           fontWeight: 700,
           marginBottom: 30,
           marginTop: 30,
-          color: "#fff",
+          color: "#03045E",
         }}
       >
         Manage users
@@ -130,9 +130,9 @@ const ManageUser = ({ navigation }) => {
                       icon="trash-can-outline"
                       mode="contained"
                       onPress={() => handleDeleteUser(item.AccountID)}
-                      style={{backgroundColor:"#EC7063"}}
+                      style={{ backgroundColor:"#ef476f", marginHorizontal: 90}}
                     >
-                      Delete user
+                      Delete User
                     </Button>
                   )}
                 </Card.Content>

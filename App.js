@@ -55,10 +55,10 @@ const BottomTabNavigators = () => {
             <Ionicons
               name={focused ? "home" : "home-outline"}
               size={focused ? 22 : 22}
-              color={focused ? "#A52A2A" : "grey"}
+              color={focused ? "#03045E" : "grey"}
             />
           ),
-          tabBarActiveTintColor: "#A52A2A",
+          tabBarActiveTintColor: "#03045E",
         }}
       />
 
@@ -72,10 +72,10 @@ const BottomTabNavigators = () => {
             <Ionicons
               name={focused ? "cart" : "cart-outline"}
               size={focused ? 22 : 22}
-              color={focused ? "#A52A2A" : "grey"}
+              color={focused ? "#03045E" : "grey"}
             />
           ),
-          tabBarActiveTintColor: "#A52A2A",
+          tabBarActiveTintColor: "#03045E",
         }}
       />
       <Tab.Screen
@@ -89,10 +89,10 @@ const BottomTabNavigators = () => {
             <Ionicons
               name={focused ? "person" : "person-outline"}
               size={focused ? 22 : 22}
-              color={focused ? "#A52A2A" : "grey"}
+              color={focused ? "#03045E" : "grey"}
             />
           ),
-          tabBarActiveTintColor: "#A52A2A",
+          tabBarActiveTintColor: "#03045E",
         }}
       />
        <Tab.Screen
@@ -106,10 +106,10 @@ const BottomTabNavigators = () => {
             <Ionicons
               name={focused ? "wallet" : "wallet-outline"}
               size={focused ? 22 : 22}
-              color={focused ? "#A52A2A" : "grey"}
+              color={focused ? "#03045E" : "grey"}
             />
           ),
-          tabBarActiveTintColor: "#A52A2A",
+          tabBarActiveTintColor: "#03045E",
         }}
       />
     </Tab.Navigator>

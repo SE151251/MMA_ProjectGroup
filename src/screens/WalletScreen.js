@@ -42,14 +42,14 @@ const WalletScreen = ({navigation}) => {
     }     
   },[isFocused]);
   return (
-    <View style={{backgroundColor:"#52BE80"}}>
+    <View style={{ backgroundColor:"#CAF0F8"}}>
       {data && <>
       
       
-      <Text style={{textAlign: "center", fontSize:30, fontWeight:700, marginTop: 10, color: "#F4D03F",}}>Wallet Screen</Text>
-      <Text style={{textAlign: "center", fontSize:30, fontWeight:700, color: "#F4D03F",}}>Your Balance: {data.Balance}</Text>
-      <Button icon="cash-multiple" mode="contained-tonal" 
-      style={{margin: 20, backgroundColor:"rgba(52, 152, 219, .7)" }} 
+        <Text style={{ textAlign: "center", fontSize: 30, fontWeight: 700, marginTop: 10, color: "#03045E",}}>Wallet Screen</Text>
+        <Text style={{ textAlign: "center", fontSize: 25, fontWeight: 700, color: "#031d44",}}>Your Balance: {data.Balance}</Text>
+      <Button icon="cash-multiple" mode="contained" 
+          style={{ margin: 20, backgroundColor: "#022b3a", marginHorizontal: 120 }} 
       onPress={()=>{
           navigation.navigate("DepositMoney");
         }}>Deposit Money</Button>
@@ -77,34 +77,34 @@ const WalletScreen = ({navigation}) => {
               {item.RechargeStatus === 1 && 
                <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
                <Text style={{ fontSize: 18, fontWeight: 500 }}>Recharge Status: </Text>
-               <Chip
-                icon="checkbox-marked"
-                mode="outlined"
-                style={{ backgroundColor: "#2ECC71", width: 120 }}
+               <Text
+                // icon="checkbox-marked"
+                // mode="outlined"
+                    style={{ backgroundColor: "#3f37c9", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                >
                  Successed
-               </Chip>
+               </Text>
              </View>
               }
               {item.RechargeStatus === 2 && 
                <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
                <Text style={{ fontSize: 18, fontWeight: 500 }}>Recharge Status: </Text>
-               <Chip
-               icon="cancel"
-               mode="outlined"
-               style={{ backgroundColor: "#EC7063", width: 90 }}
+               <Text
+              //  icon="cancel"
+              //  mode="outlined"
+                    style={{ backgroundColor: "#d90429", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                >
                  Failed
-               </Chip>
+               </Text>
              </View>
               }
               {item.RechargeStatus === 0 && 
               <View style={{flexDirection:"row", alignItems:"center", marginTop: 10}}>
               <Text style={{ fontSize: 18, fontWeight: 500 }}>Status: </Text>
               <Chip
-                icon="dots-horizontal"
-                mode="outlined"
-                style={{ backgroundColor: "#F9E79F", width: 130 }}
+                // icon="dots-horizontal"
+                // mode="outlined"
+                    style={{ backgroundColor: "#540b0e", width: 90, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
               >
                 Pending
               </Chip>

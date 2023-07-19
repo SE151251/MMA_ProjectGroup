@@ -43,7 +43,7 @@ const DepositMoney = ({navigation}) => {
       style={{textAlign:"center", fontSize:24, fontWeight: 900,
     marginBottom: 30
     }}
-      >Deposit money to your account</Text>
+      >Please Recharge The Account</Text>
       <TextInput
         style={styles.input}
         placeholder="Type your Money to deposit"

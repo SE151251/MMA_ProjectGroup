@@ -107,7 +107,7 @@ const Card = ({ data, navigation, cartData, setCartData }) => {
                 style={[styles.iconStar, { marginLeft: 2.5 }]}
                 name="cart-plus"
                 size={24}
-                color="black"
+                color="#023E8A"
               />
             </Animated.View>
           </TouchableWithoutFeedback>
@@ -116,7 +116,7 @@ const Card = ({ data, navigation, cartData, setCartData }) => {
               style={styles.iconStar}
               name="star"
               size={14}
-              color="#fff700"
+              color="#023E8A"
             />
             <Text style={styles.ratingText}>5</Text>
           </View>
@@ -166,10 +166,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   time: {
-    fontSize: 12,
+    fontSize: 14,
     color: COLORS.brown,
     fontWeight: "500",
     marginTop: 2,
+    marginLeft: 50
   },
   infoContainer: {
     flexDirection: "row",

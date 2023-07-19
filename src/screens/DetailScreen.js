@@ -235,8 +235,8 @@ const DetailsScreen = ({ navigation, route }) => {
           </ScrollView>
           <Button
               mode="contained-tonal"
-              style={{ borderRadius: 20, margin: 20 }}
-              buttonColor="#F7DC6F"
+              style={{ borderRadius: 20, margin: 20, marginHorizontal: 130 }}
+              buttonColor="#48CAE4"
               onPress={changeFavorite}
               icon="cart-plus"
             >
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: COLORS.lightOrange,
-    backgroundColor: "#52BE80"
+    backgroundColor: "#CAF0F8"
   },
   header: {
     flexDirection: "row",

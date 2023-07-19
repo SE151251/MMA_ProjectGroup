@@ -88,7 +88,7 @@ const OrderDetail = ({ navigation, route }) => {
     }
   };
   return (
-    <ScrollView style={{ backgroundColor: "#52BE80" }}>
+    <ScrollView style={{ backgroundColor: "#CAF0F8" }}>
       <View style={{ marginBottom: 20, marginTop: 30 }}>
         <Ionicons
           name="arrow-back-outline"
@@ -103,6 +103,7 @@ const OrderDetail = ({ navigation, route }) => {
           fontWeight: 700,
           textAlign: "center",
           marginBottom: 20,
+          color: "#03045E"
           //
         }}
       >
@@ -138,13 +139,13 @@ const OrderDetail = ({ navigation, route }) => {
                   <Text style={{ fontSize: 18, fontWeight: 500 }}>
                     Status:{" "}
                   </Text>
-                  <Chip
-                    icon="new-box"
-                    mode="outlined"
-                    style={{ backgroundColor: "#F9E79F", width: 130 }}
+                  <Text
+                    // icon="new-box"
+                    // mode="outlined"
+                    style={{ backgroundColor: "#133c55", width: 100, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                   >
                     New Order
-                  </Chip>
+                  </Text>
                 </View>
               )}
               {data.orderStatus === 1 && (
@@ -158,13 +159,13 @@ const OrderDetail = ({ navigation, route }) => {
                   <Text style={{ fontSize: 18, fontWeight: 500 }}>
                     Status:{" "}
                   </Text>
-                  <Chip
-                    icon="dots-horizontal"
-                    mode="outlined"
-                    style={{ backgroundColor: "#5DADE2", width: 120 }}
+                  <Text
+                    // icon="dots-horizontal"
+                    // mode="outlined"
+                    style={{ backgroundColor: "#540b0e", width: 90, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                   >
                     Processing
-                  </Chip>
+                  </Text>
                 </View>
               )}
               {data.orderStatus === 2 && (
@@ -178,13 +179,13 @@ const OrderDetail = ({ navigation, route }) => {
                   <Text style={{ fontSize: 18, fontWeight: 500 }}>
                     Status:{" "}
                   </Text>
-                  <Chip
-                    icon="checkbox-marked"
-                    mode="outlined"
-                    style={{ backgroundColor: "#2ECC71", width: 80 }}
+                  <Text
+                    // icon="checkbox-marked"
+                    // mode="outlined"
+                    style={{ backgroundColor: "#3f37c9", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                   >
                     Done
-                  </Chip>
+                  </Text>
                 </View>
               )}
               {data.orderStatus === 3 && (
@@ -198,29 +199,29 @@ const OrderDetail = ({ navigation, route }) => {
                   <Text style={{ fontSize: 18, fontWeight: 500 }}>
                     Status:{" "}
                   </Text>
-                  <Chip
-                    icon="cancel"
-                    mode="outlined"
-                    style={{ backgroundColor: "#EC7063", width: 90 }}
+                  <Text
+                    // icon="cancel"
+                    // mode="outlined"
+                    style={{ backgroundColor: "#d90429", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                   >
                     Cancel
-                  </Chip>
+                  </Text>
                 </View>
               )}
 
               {data.orderStatus === 0 && (
                 <Button
-                  icon="cancel"
-                  mode="contained-tonal"
+                  icon="trash-can"
+                  mode="contained"
                   onPress={() => handleCancelOrder(data.id)}
-                  style={{ margin: 20, backgroundColor: "#EC7063" }}
+                  style={{ margin: 20, backgroundColor: "#d90429", marginHorizontal: 100 }}
                 >
                   Cancel
                 </Button>
               )}
             </Card.Content>
           </Card>
-          <Text style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}>
+          <Text style={{ textAlign: "center", fontSize: 24, fontWeight: 700, color: "#03045E" }}>
             List Meals
           </Text>
           <FlatList
@@ -287,7 +288,7 @@ const OrderDetail = ({ navigation, route }) => {
             )}
           />
 
-          <Text style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}>
+          <Text style={{ textAlign: "center", fontSize: 24, fontWeight: 700, color: "#03045E" }}>
             Order Logs
           </Text>
           <FlatList
@@ -323,13 +324,13 @@ const OrderDetail = ({ navigation, route }) => {
                       <Text style={{ fontSize: 18, fontWeight: 500 }}>
                         Status:{" "}
                       </Text>
-                      <Chip
-                        icon="new-box"
-                        mode="outlined"
-                        style={{ backgroundColor: "#F9E79F", width: 130 }}
+                      <Text
+                        // icon="new-box"
+                        // mode="outlined"
+                        style={{ backgroundColor: "#133c55", width: 100, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                       >
                         New Order
-                      </Chip>
+                      </Text>
                     </View>
                   )}
                   {item.status === 1 && (
@@ -343,13 +344,13 @@ const OrderDetail = ({ navigation, route }) => {
                       <Text style={{ fontSize: 18, fontWeight: 500 }}>
                         Status:{" "}
                       </Text>
-                      <Chip
-                        icon="dots-horizontal"
-                        mode="outlined"
-                        style={{ backgroundColor: "#5DADE2", width: 120 }}
+                      <Text
+                        // icon="dots-horizontal"
+                        // mode="outlined"
+                        style={{ backgroundColor: "#540b0e", width: 90, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                       >
                         Processing
-                      </Chip>
+                      </Text>
                     </View>
                   )}
                   {item.status === 2 && (
@@ -363,13 +364,13 @@ const OrderDetail = ({ navigation, route }) => {
                       <Text style={{ fontSize: 18, fontWeight: 500 }}>
                         Status:{" "}
                       </Text>
-                      <Chip
-                        icon="checkbox-marked"
-                        mode="outlined"
-                        style={{ backgroundColor: "#2ECC71", width: 80 }}
+                      <Text
+                        // icon="checkbox-marked"
+                        // mode="outlined"
+                        style={{ backgroundColor: "#3f37c9", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                       >
                         Done
-                      </Chip>
+                      </Text>
                     </View>
                   )}
                   {item.status === 3 && (
@@ -383,13 +384,13 @@ const OrderDetail = ({ navigation, route }) => {
                       <Text style={{ fontSize: 18, fontWeight: 500 }}>
                         Status:{" "}
                       </Text>
-                      <Chip
-                        icon="cancel"
-                        mode="outlined"
-                        style={{ backgroundColor: "#EC7063", width: 90 }}
+                      <Text
+                        // icon="cancel"
+                        // mode="outlined"
+                        style={{ backgroundColor: "#d90429", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                       >
                         Cancel
-                      </Chip>
+                      </Text>
                     </View>
                   )}
                 </Card.Content>

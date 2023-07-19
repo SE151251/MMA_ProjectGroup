@@ -145,8 +145,9 @@ const Profile = ({ navigation }) => {
                   backgroundColor: "white",
                   padding: 5,
                   borderWidth: 1,
-                  borderColor: "black",
+                  borderColor: "white",
                   alignItems: "center",
+                  borderRadius: 10
                 }}
               >
                 <Text
@@ -171,9 +172,9 @@ const Profile = ({ navigation }) => {
 
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{ backgroundColor: "#fa9737", borderWidth: 1, borderRadius: 20, }}
+              style={{ backgroundColor: "#03045E", borderWidth: 1, borderRadius: 20, marginHorizontal: 120 }}
             >
-              <Text style={{ paddingHorizontal: 25, fontWeight: 'bold', paddingVertical: 10, textAlign: 'center', fontSize: 20, }}>Go Back</Text>
+              <Text style={{ paddingHorizontal: 25, fontWeight: 'bold', paddingVertical: 10, textAlign: 'center', fontSize: 20, color: "#ffffff" }}>Back</Text>
             </TouchableOpacity>
 
 
@@ -206,6 +207,8 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 20,
     backgroundColor: "white",
+    borderRadius: 10,
+    borderColor: "white",
   },
   scrollContainer: {
     flexGrow: 1,

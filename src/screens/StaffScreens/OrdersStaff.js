@@ -30,17 +30,18 @@ const DashboardStaff = ({ navigation }) => {
     }
   }, [isFocused]);
   return (
-    <View style={{backgroundColor:"#52BE80"}}>
+    <View style={{ backgroundColor:"#CAF0F8"}}>
       <Text
         style={{
           textAlign: "center",
-          fontSize: 24,
+          fontSize: 28,
           fontWeight: 700,
           marginBottom: 20,
-          marginTop: 30,
+          marginTop: -1,
+          color: "#03045e"
         }}
       >
-        List Orders
+        
       </Text>
       {data && (
         <FlatList
@@ -91,13 +92,13 @@ const DashboardStaff = ({ navigation }) => {
                     <Text style={{ fontSize: 18, fontWeight: 500 }}>
                       Status:{" "}
                     </Text>
-                    <Chip
-                      icon="new-box"
-                      mode="outlined"
-                      style={{ backgroundColor: "#F9E79F", width: 130 }}
+                    <Text
+                      // icon="new-box"
+                      // mode="outlined"
+                      style={{ backgroundColor: "#133c55", width: 100, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                     >
                       New Order
-                    </Chip>
+                    </Text>
                   </View>
                 )}
                 {item.OrderStatus === 1 && (
@@ -111,13 +112,13 @@ const DashboardStaff = ({ navigation }) => {
                     <Text style={{ fontSize: 18, fontWeight: 500 }}>
                       Status:{" "}
                     </Text>
-                    <Chip
-                      icon="dots-horizontal"
-                      mode="outlined"
-                      style={{ backgroundColor: "#5DADE2", width: 120 }}
+                    <Text
+                      // icon="dots-horizontal"
+                      // mode="outlined"
+                      style={{ backgroundColor: "#540b0e", width: 90, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                     >
                       Processing
-                    </Chip>
+                    </Text>
                   </View>
                 )}
                 {item.OrderStatus === 2 && (
@@ -131,13 +132,13 @@ const DashboardStaff = ({ navigation }) => {
                     <Text style={{ fontSize: 18, fontWeight: 500 }}>
                       Status:{" "}
                     </Text>
-                    <Chip
-                      icon="checkbox-marked"
-                      mode="outlined"
-                      style={{ backgroundColor: "#2ECC71", width: 80 }}
+                    <Text
+                      // icon="checkbox-marked"
+                      // mode="outlined"
+                      style={{ backgroundColor: "#3f37c9", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                     >
                       Done
-                    </Chip>
+                    </Text>
                   </View>
                 )}
                 {item.OrderStatus === 3 && (
@@ -151,13 +152,13 @@ const DashboardStaff = ({ navigation }) => {
                     <Text style={{ fontSize: 18, fontWeight: 500 }}>
                       Status:{" "}
                     </Text>
-                    <Chip
-                      icon="cancel"
-                      mode="outlined"
-                      style={{ backgroundColor: "#EC7063", width: 90 }}
+                    <Text
+                      // icon="cancel"
+                      // mode="outlined"
+                      style={{ backgroundColor: "#d90429", width: 80, color: '#ffffff', borderRadius: 10, textAlign: "center", padding: 5, fontWeight: "bold" }}
                     >
                       Cancel
-                    </Chip>
+                    </Text>
                   </View>
                 )}
               </Card.Content>

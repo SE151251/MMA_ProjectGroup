@@ -89,12 +89,13 @@
 
 // export default TestPage;
 import React, { useState } from 'react';
-import { View, TextInput, Platform, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { View, TextInput, Platform, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import COLORS from '../constants/colors'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import  Toast  from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
+import { Ionicons } from '@expo/vector-icons';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -108,34 +109,34 @@ const Login = ({ navigation }) => {
     const trimmedEmail = inputEmail.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!trimmedEmail) {
-        setEmailError('Please enter an email');
-        isValid = false
+      setEmailError('Please enter an email');
+      isValid = false
     } else if (!emailRegex.test(trimmedEmail)) {
-        setEmailError('Please enter a valid email address');
-        isValid = false
-    } else if(trimmedEmail.length < 12 || trimmedEmail.length > 100){
-        setEmailError('Email need to be 12 to 100 characters ');
-        isValid = false
+      setEmailError('Please enter a valid email address');
+      isValid = false
+    } else if (trimmedEmail.length < 12 || trimmedEmail.length > 100) {
+      setEmailError('Email need to be 12 to 100 characters ');
+      isValid = false
     } else {
-        setEmailError('')
+      setEmailError('')
     }
     setEmail(inputEmail)
     return isValid
-}
+  }
 
 
   const validatePassword = (inputPassword) => {
     let isValid = true
     const trimmedPassword = inputPassword.trim();
     if (!trimmedPassword) {
-        setPasswordError('Please enter a password');
-        isValid = false
+      setPasswordError('Please enter a password');
+      isValid = false
     } else {
-        setPasswordError('')
+      setPasswordError('')
     }
     setPassword(inputPassword)
     return isValid
-}
+  }
 
 
 
@@ -154,66 +155,66 @@ const Login = ({ navigation }) => {
       //       setLoginError('')
       //     }
       //   })
-    try {
-      const data = await axios.post(`https://bmosapplication.azurewebsites.net/odata/authentications/login`,
-      { 
-        email: email,
-      passwordHash: password
-    })
-    await AsyncStorage.setItem("access_token", data.data.accessToken)
-    await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
-    await AsyncStorage.setItem("user_info",JSON.stringify({
-      id: data.data.accountId,
-      email: data.data.email,
-      name: data.data.fullName,
-      role: data.data.role,
-      isLogin: true
-    }))
-    if(data.data.role === "Customer") {
-      console.log("zo");   
-      navigation.navigate("Home")
-      Toast.show({
-        type: "success",
-        text1: "Message",
-        text2: "Login successfully",
-      });
-      return
-    }
-    if(data.data.role === "Staff"){
-      console.log("staff token: ", data.data.accessToken);
-      setEmail('')
-      setPassword('')
-      navigation.navigate("StaffHome")
-      Toast.show({
-        type: "success",
-        text1: "Message",
-        text2: "Login successfully",
-      });
-      return
-    }
-    if(data.data.role === "Store Owner"){
-      console.log("admin");
-      setEmail('')
-      setPassword('')
-      navigation.navigate("AdminHome")
-      Toast.show({
-        type: "success",
-        text1: "Message",
-        text2: "Login successfully",
-      });
-      return
-    }
-    } catch (error) {
-      // Xử lý lỗi khi đăng nhập thất bại
-      if(error.response && error.response.data){
-        console.log(error.response.data.Message[0].DescriptionError[0]);
+      try {
+        const data = await axios.post(`https://bmosapplication.azurewebsites.net/odata/authentications/login`,
+          {
+            email: email,
+            passwordHash: password
+          })
+        await AsyncStorage.setItem("access_token", data.data.accessToken)
+        await AsyncStorage.setItem("refresh_token", data.data.refreshToken)
+        await AsyncStorage.setItem("user_info", JSON.stringify({
+          id: data.data.accountId,
+          email: data.data.email,
+          name: data.data.fullName,
+          role: data.data.role,
+          isLogin: true
+        }))
+        if (data.data.role === "Customer") {
+          console.log("zo");
+          navigation.navigate("Home")
+          Toast.show({
+            type: "success",
+            text1: "Message",
+            text2: "Login successfully",
+          });
+          return
+        }
+        if (data.data.role === "Staff") {
+          console.log("staff token: ", data.data.accessToken);
+          setEmail('')
+          setPassword('')
+          navigation.navigate("StaffHome")
+          Toast.show({
+            type: "success",
+            text1: "Message",
+            text2: "Login successfully",
+          });
+          return
+        }
+        if (data.data.role === "Store Owner") {
+          console.log("admin");
+          setEmail('')
+          setPassword('')
+          navigation.navigate("AdminHome")
+          Toast.show({
+            type: "success",
+            text1: "Message",
+            text2: "Login successfully",
+          });
+          return
+        }
+      } catch (error) {
+        // Xử lý lỗi khi đăng nhập thất bại
+        if (error.response && error.response.data) {
+          console.log(error.response.data.Message[0].DescriptionError[0]);
+        }
+        Toast.show({
+          type: "error",
+          text1: "Message",
+          text2: "Login Failed! Please check your email and password again!",
+        });
       }
-      Toast.show({
-        type: "error",
-        text1: "Message",
-        text2: "Login Failed! Please check your email and password again!",
-      });
-    }
 
     }
   };
@@ -225,9 +226,14 @@ const Login = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.container}>
-      <View style={{alignItems: 'center', marginBottom: 20}}>
-                    <Text style={{ fontSize: 30, fontWeight:'bold'}} >Login</Text>
-                </View>
+        <View style={{ marginLeft: 90 }}>
+          <Image
+            source={require('../../assets/images/logo.png')}
+            style={{ width: 170, height: 170 }}
+          /></View>
+        <View style={{ alignItems: 'center', marginBottom: 20 }}>
+          <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#03045E' }} >Login</Text>
+        </View>
         <View style={styles.inputContainer}>
           <FontAwesome name="user" size={24} color="black" style={{ marginRight: 10 }} />
           <TextInput
@@ -252,7 +258,7 @@ const Login = ({ navigation }) => {
         {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
         <View style={{ flexDirection: 'row-reverse' }}>
           <TouchableOpacity style={{ paddingRight: 20 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Forgot Password?</Text>
+            {/* <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Forgot Password?</Text> */}
           </TouchableOpacity>
         </View>
 
@@ -261,25 +267,26 @@ const Login = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() => handleLogin()}
-          style={{ backgroundColor: "#F7DC6F", padding: 10, borderRadius: 20, marginHorizontal: 30, marginVertical: 10, borderWidth: 1, borderColor: 'black' }}
+          style={{ backgroundColor: "#03045E", padding: 10, borderRadius: 30, marginHorizontal: 120, marginVertical: 10, borderWidth: 1, borderColor: 'black' }}
         >
-          <Text style={{ color: 'black', textAlign: 'center', fontSize: 20, }}>Login</Text>
+          <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}>Login</Text>
         </TouchableOpacity>
 
 
         <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
-          onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("Register")}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Don't have an account? Register now</Text>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#023E8A' }}>Don't have an account? Register now</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', marginTop: 10, color: '#03045E' }}>
           <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home")}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Back to Home</Text>
+            <Ionicons name="md-home" size={24} color="black" />
+            {/* <Text style={{ fontSize: 18, fontWeight: 'bold', }}>Back to Home</Text> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -294,7 +301,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     // backgroundColor: COLORS.lightOrange
-    backgroundColor: "#52BE80"
+    backgroundColor: "#CAF0F8"
   },
   inputContainer: {
     flexDirection: 'row',

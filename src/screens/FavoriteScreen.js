@@ -200,13 +200,13 @@ const FavoriteScreen = ({ navigation }) => {
             >
               <Card.Content>
                 <Text
-                  style={{ textAlign: "center", fontSize: 24, fontWeight: 700 }}
+                  style={{ textAlign: "center", fontSize: 24, fontWeight: 700, color: "#03045E" }}
                 >
                   Overview
                 </Text>
-                <Text>Total Type Meal: {favData.length}</Text>
-                <Text>Total Meal: {totalMeal}</Text>
-                <Text>Total Price: {totalPrice} VNĐ</Text>
+                <Text style={{fontWeight: "bold"}}>Total Type Meal: {favData.length}</Text>
+                <Text style={{ fontWeight: "bold" }}>Total Meal: {totalMeal}</Text>
+                <Text style={{ fontWeight: "bold" }}>Total Price: {totalPrice} VNĐ</Text>
               </Card.Content>
             </Card>
           </View>
@@ -216,7 +216,7 @@ const FavoriteScreen = ({ navigation }) => {
               icon="cart-check"
               mode="contained-tonal"
               onPress={() => hanldeCheckout()}
-              style={{ margin: 20, backgroundColor:"#F7DC6F" }}
+              style={{ margin: 20, backgroundColor: "#48CAE4", fontWeight: "bold", marginHorizontal: 130, marginVertical: 130 }}
             >
               Checkout
             </Button>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: COLORS.lightOrange,
-    backgroundColor: "#52BE80"
+    backgroundColor: "#CAF0F8"
   },
   clearContainer: {
     marginHorizontal: 20,

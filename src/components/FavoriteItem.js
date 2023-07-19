@@ -94,7 +94,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 20,
     // overflow: "hidden",
-    width: 330,
+    width: 350,
+    borderRadius: 20
+    
   },
   imageItem: {
     position: "absolute",
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     opacity: 0.75,
+    borderRadius: 20
   },
   textContainer: {
     position: "absolute",
@@ -114,6 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     // justifyContent: "flex-start",
     // alignItems: "center",
+    borderRadius: 20
   },
   text: {
     color: "white",

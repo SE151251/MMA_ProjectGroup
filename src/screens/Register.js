@@ -274,8 +274,8 @@ const Register = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
           <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-              Register Form
+            <Text style={{ fontSize: 30, fontWeight: "bold", color: "#03045E" }}>
+              Register
             </Text>
           </View>
           <View style={styles.inputContainer}>
@@ -455,7 +455,9 @@ const Register = ({ navigation }) => {
                     borderWidth: 1,
                     paddingVertical: 5,
                     paddingHorizontal: 15,
-                    backgroundColor: "#fa9737",
+                    backgroundColor: "#0077B6",
+                    borderRadius: 20,
+                    color: "#ffffff"
                   }}
                 >
                   Select Avatar
@@ -470,16 +472,10 @@ const Register = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => handleRegister()}
             style={{
-              backgroundColor: "#F7DC6F",
-              padding: 10,
-              borderRadius: 20,
-              marginHorizontal: 30,
-              marginVertical: 10,
-              borderWidth: 1,
-              borderColor: "black",
+              backgroundColor: "#03045E", padding: 10, borderRadius: 30, marginHorizontal: 120, marginVertical: 10, borderWidth: 1, borderColor: 'black'
             }}
           >
-            <Text style={{ color: "black", textAlign: "center", fontSize: 20 }}>
+            <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}>
               Register
             </Text>
           </TouchableOpacity>
@@ -503,7 +499,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 20,
     // backgroundColor: COLORS.lightOrange,
-    backgroundColor: "#52BE80",
+    backgroundColor: "#CAF0F8",
     paddingVertical: 30,
   },
   inputContainer: {

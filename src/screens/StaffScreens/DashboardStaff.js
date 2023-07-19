@@ -30,7 +30,7 @@ const DashboardStaff = ({ navigation }) => {
     }
   }, [isFocused]);
   return (
-    <ScrollView style={{ backgroundColor: "#52BE80" }}>
+    <ScrollView style={{ backgroundColor: "#CAF0F8" }}>
       <Text
         style={{
           textAlign: "center",
@@ -38,7 +38,7 @@ const DashboardStaff = ({ navigation }) => {
           fontWeight: 700,
           marginBottom: 30,
           marginTop: 30,
-          color:"#fff"
+          color:"#03045E"
         }}
       >
         STAFF Dashboard
