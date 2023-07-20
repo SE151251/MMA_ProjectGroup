@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
-import COLORS from "../constants/colors";
 import {
   View,
   TextInput,
@@ -11,8 +10,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  Alert,
 } from "react-native";
+import Toast from 'react-native-toast-message';
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -181,7 +180,6 @@ const EditProfile = ({ route, navigation }) => {
       isPhoneValid &&
       isGenderValid
     ) {
-      console.log(true);
       const user_info_json = await AsyncStorage.getItem("user_info");
       const user_data = JSON.parse(user_info_json);
       const userId = user_data.id;
@@ -198,8 +196,10 @@ const EditProfile = ({ route, navigation }) => {
 
       const data = await updateUserProfile(userId, access_token, updatedData);
       if (data === null || data === undefined) {
-        Alert.alert("", "Profile Updated", [{ text: "OK" }], {
-          cancelable: false,
+        Toast.show({
+          type: "success",
+          text1: "Message",
+          text2: "Profile Updated",
         });
         navigation.goBack();
       } else {
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: COLORS.lightOrange,
+    backgroundColor: "#CAF0F8",
     paddingVertical: 100,
   },
   editIconContainer: {

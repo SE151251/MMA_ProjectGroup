@@ -21,8 +21,6 @@ const getUserProfile = async (userId, token) => {
   
   const updateUserProfile = async (userId, token, updatedData) => {
     try {
-      console.log(userId)
-      console.log(updatedData.Phone)
       const formData = new FormData();
       formData.append('FullName', updatedData.FullName);
       formData.append('Address', updatedData.Address);

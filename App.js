@@ -28,7 +28,8 @@ import Profile from "./src/screens/Profile";
 import Register from "./src/screens/Register";
 import EditProfile from "./src/screens/EditProfile";
 import Login from "./src/screens/LoginScreen";
-
+import CreateProduct from "./src/screens/StaffScreens/CreateProduct"
+import CreateMeal from "./src/screens/StaffScreens/CreateMeal"
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -195,6 +196,34 @@ const StaffDrawerNavigator = () => {
           drawerIcon: ({ color, focused }) => (
             <Ionicons
               name="ios-home-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    <Drawer.Screen
+        name="TabCreateProduct"
+        component={CreateProduct}
+        options={{
+          title: "Create Product",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="add-circle-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    <Drawer.Screen
+        name="TabCreateMeal"
+        component={CreateMeal}
+        options={{
+          title: "Create Meal",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="add-circle-outline"
               size={focused ? 20 : 20}
               color={color}
             />

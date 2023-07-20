@@ -14,7 +14,6 @@ import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { FontAwesome } from "@expo/vector-icons";
-import COLORS from "../constants/colors";
 import registerService from "../services/RegisterService";
 import  Toast  from "react-native-toast-message";
 
