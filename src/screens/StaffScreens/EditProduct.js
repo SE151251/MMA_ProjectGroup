@@ -15,19 +15,25 @@ import Toast from 'react-native-toast-message';
 import * as ImagePicker from "expo-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CreateProductService } from "../../services/ProductService"
+import { Picker } from "@react-native-picker/picker";
+import { UpdateProductService } from "../../services/ProductService";
 
-const CreateProduct = ({ navigation }) => {
-  const today = new Date();
+const EditProduct = ({ route, navigation }) => {
+  const { product } = route.params;
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [expiredDate, setExpiredDate] = useState('');
-  const [total, setTotal] = useState('');
-  const [price, setPrice] = useState('');
-  const [productImage, setProductImage] = useState(null);
-  const [originalPrice, setOriginalPrice] = useState('');
-  const [dateText, setDateText] = useState('Select Expired Date');
+  const today = new Date()
+  const parsedDate = new Date(product.expiredDate);
+
+  const [id, setId] = useState(product.id);
+  const [name, setName] = useState(product.name);
+  const [description, setDescription] = useState(product.description);
+  const [expiredDate, setExpiredDate] = useState(parsedDate);
+  const [total, setTotal] = useState(product.total.toString());
+  const [price, setPrice] = useState(product.price.toString());
+  const [status, setStatus] = useState(product.status);
+  const [productImage, setProductImage] = useState(product.productImage);
+  const [originalPrice, setOriginalPrice] = useState(product.originalPrice.toString());
+  const [dateText, setDateText] = useState(product.dateText);
   const [showPicker, setShowPicker] = useState(false);
 
   const [nameError, setNameError] = useState("");
@@ -36,7 +42,6 @@ const CreateProduct = ({ navigation }) => {
   const [expiredDateError, setExpiredDateError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [originalPriceError, setOriginalPriceError] = useState("");
-  const [productImageError, setProductImageError] = useState("");
 
   const showDatePicker = () => {
     setShowPicker(true);
@@ -57,6 +62,10 @@ const CreateProduct = ({ navigation }) => {
     validateExpiredDate(selectedDate);
     setDateText(formattedDate);
   };
+
+  const handleStatusChange = (inputStatus) =>{
+    setStatus(inputStatus)
+  }
 
   const validateName = (inputName) => {
     let isValid = true;
@@ -167,40 +176,6 @@ const CreateProduct = ({ navigation }) => {
     return isValid;
   };
 
-  const validateProductImage = () => {
-    let isValid = true;
-    setProductImageError("");
-    if (productImage === null || productImage.length === 0) {
-      setProductImageError("Please select a product image");
-      isValid = false;
-    }
-    return isValid;
-  };
-
-  const selectProductImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setProductImage(result.assets[0].uri);
-      setProductImageError("");
-    }
-  };
-
-  const clearForm = () => {
-    setName('')
-    setDescription('')
-    setPrice('')
-    setTotal('')
-    setOriginalPrice('')
-    setExpiredDate(null)
-    setDateText('Select Expired Date')
-    setProductImage('')
-  }
-
   const handleCreateProduct = async () => {
     const isNameValid = validateName(name);
     const isDescriptionValid = validateDescription(description);
@@ -208,27 +183,23 @@ const CreateProduct = ({ navigation }) => {
     const isPriceValid = validatePrice(price);
     const isExpiredDateValid = validateExpiredDate(expiredDate);
     const isOriginalPriceValid = validateOriginalPrice(originalPrice);
-    const isProductImageValid = validateProductImage()
     if (
       isNameValid &&
       isDescriptionValid &&
       isExpiredDateValid &&
       isTotalValid &&
       isPriceValid &&
-      isOriginalPriceValid &&
-      isProductImageValid
+      isOriginalPriceValid 
     ) {
       const access_token = await AsyncStorage.getItem("access_token");
-      const result = await CreateProductService(name, description, expiredDate, total, price, originalPrice, productImage, access_token)
-      console.log(result)
-      if (result) {
+      const result = await UpdateProductService(id, name, description, originalPrice, price, total, status, expiredDate, access_token)
+      if (!result) {
         Toast.show({
           type: "success",
           text1: "Message",
-          text2: `Create ${name} Success`,
+          text2: `Update ${name} Success`,
         });
-        clearForm()
-      } else {
+      }  else {
         Toast.show({
           type: "error",
           text1: "Message",
@@ -245,15 +216,12 @@ const CreateProduct = ({ navigation }) => {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
-          <TouchableOpacity onPress={selectProductImage}>
-            <View style={{ alignItems: "center", marginBottom: 20 }}>
+            <View style={{ alignItems: "center", marginBottom: 20, marginTop: 60 }}>
               <Image
-                source={productImage ? { uri: productImage } : require('../../../assets/images/empty-picture.png')}
+                source={productImage ? { uri: productImage } : require("../../../assets/images/empty-picture.png")}
                 style={styles.productImage}
               />
-              {productImageError ? (<Text style={styles.errorText}>{productImageError}</Text>) : null}
             </View>
-          </TouchableOpacity>
 
           <View style={styles.inputContainer}>
             <FontAwesome
@@ -285,7 +253,7 @@ const CreateProduct = ({ navigation }) => {
           {totalError ? (<Text style={styles.errorText}>{totalError}</Text>) : null}
 
           <View style={styles.inputContainer}>
-            <FontAwesome name="dollar" size={24} color="black" style={{ marginRight: 5 }} />
+            <FontAwesome name="dollar" size={24} color="black" style={{ marginRight: 10 }} />
             <Text style={{textAlign: 'center', paddingTop: 5, marginRight: 5}}>(Price)</Text>
             <TextInput
               style={styles.inputText}
@@ -299,7 +267,7 @@ const CreateProduct = ({ navigation }) => {
 
           <View style={styles.inputContainer}>
             <FontAwesome name="money" size={24} color="black" style={{ marginRight: 5 }} />
-            <Text style={{textAlign: 'center', paddingTop: 5, marginRight: 5}}>(Original Price)</Text>
+            <Text style={{textAlign: 'center', paddingTop: 5, marginRight: 5}}>(Origininal)</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Original Price"
@@ -325,8 +293,8 @@ const CreateProduct = ({ navigation }) => {
             </TouchableOpacity>
             {showPicker && (
               <DateTimePicker
-                minimumDate={today}
                 value={expiredDate || new Date()}
+                minimumDate={today}
                 mode="date"
                 display="default"
                 onChange={handleDateChange}
@@ -335,6 +303,26 @@ const CreateProduct = ({ navigation }) => {
             )}
           </View>
           {expiredDateError ? (<Text style={styles.errorText}>{expiredDateError}</Text>) : null}
+
+          <View style={{
+            borderBottomColor: "black",
+            borderBottomWidth: 1,
+            marginBottom: 20,
+            marginTop: -15,
+          }}>
+            <Picker selectedValue={status} onValueChange={handleStatusChange}>
+              <Picker.Item
+                style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
+                label="Active"
+                value="1"
+              />
+              <Picker.Item
+                style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
+                label="Inactive"
+                value="0"
+              />
+            </Picker>
+          </View>
 
           <View style={{ marginBottom: 20 }}>
             <Text>Description</Text>
@@ -377,7 +365,6 @@ const CreateProduct = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                clearForm()
                 navigation.goBack()
               }}
               style={{
@@ -460,4 +447,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateProduct;
+export default EditProduct;

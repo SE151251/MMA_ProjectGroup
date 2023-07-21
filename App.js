@@ -28,9 +28,13 @@ import Profile from "./src/screens/Profile";
 import Register from "./src/screens/Register";
 import EditProfile from "./src/screens/EditProfile";
 import Login from "./src/screens/LoginScreen";
+import CreateProduct from "./src/screens/StaffScreens/CreateProduct"
+import CreateMeal from "./src/screens/StaffScreens/CreateMeal"
 import ProductsScreen from "./src/screens/StaffScreens/ProductsScreen";
 import ListMealsScreen from "./src/screens/StaffScreens/ListMealsScreen";
 import ManageStaff from "./src/screens/AdminScreens/ManageStaff";
+import EditProduct from "./src/screens/StaffScreens/EditProduct";
+import CreateStaff from "./src/screens/AdminScreens/CreateStaff";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -232,6 +236,36 @@ const StaffDrawerNavigator = () => {
           ),
         }}
       />
+    <Drawer.Screen
+        name="TabCreateProduct"
+        component={CreateProduct}
+        options={{
+          title: "Create Product",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="add-circle-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+    {/* <Drawer.Screen
+        name="TabCreateMeal"
+        component={CreateMeal}
+        options={{
+          title: "Create Meal",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="add-circle-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      /> */}
+
+      
       {/* <Drawer.Screen
         name="Login"
         component={TestPage}
@@ -346,6 +380,9 @@ export default function App() {
         <Stack.Screen name="OrderDetailStaff" component={OrderDetailStaff} />
         <Stack.Screen name="DepositMoney" component={DepositMoney} />
         <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="CreateStaff" component={CreateStaff} />
+      <Stack.Screen name="CreateProduct" component={CreateProduct} />
+      <Stack.Screen name="EditProduct" component={EditProduct} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       </Stack.Navigator>
     </NavigationContainer>
