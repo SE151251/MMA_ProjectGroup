@@ -15,7 +15,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { FontAwesome } from "@expo/vector-icons";
 import registerService from "../services/RegisterService";
-import  Toast  from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -235,32 +235,20 @@ const Register = ({ navigation }) => {
         gender,
         image
       ).then((data) => {
-        console.log(data);
-        // if (data.StatusCode === 200) {
-        //   console.log("SUCCESS");
-          navigation.navigate('LoginScreen');
-          Toast.show({
-            type: "success",
-            text1: "Message",
-            text2: "Register successfully",
-          });
-        // } else if (data.StatusCode === 400) {
-        //   data.Message.map((error) => {
-        //     console.log(error.FieldNameError);
-        //     error.DescriptionError.map((description) => {
-        //       console.log(description);
-        //     });
-        //   });
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
+        navigation.navigate('LoginScreen');
         Toast.show({
-          type: "error",
+          type: "success",
           text1: "Message",
-          text2: "Register failed",
+          text2: "Register successfully",
         });
       })
+        .catch((error) => {
+          Toast.show({
+            type: "error",
+            text1: "Message",
+            text2: "Register failed",
+          });
+        })
     }
   };
 

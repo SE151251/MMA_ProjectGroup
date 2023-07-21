@@ -13,11 +13,15 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import CheckBox from 'expo-checkbox';
+import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CreateMealService } from "../../services/MealService"
 import { GetAllProductService } from "../../services/ProductService"
 import { useIsFocused } from "@react-navigation/native";
-
+import Modal from 'react-native-modal';
+/*
+* TODO: Finishing Create Meal with Picker for Products
+*/
 const CreateMeal = ({ navigation }) => {
     const isFocused = useIsFocused();
     const [title, setTitle] = useState('');
@@ -25,6 +29,7 @@ const CreateMeal = ({ navigation }) => {
     const [mealImage, setMealImage] = useState(null);
     const [products, setProducts] = useState([])
     const [selectedProducts, setSelectedProducts] = useState([])
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const [mealImageError, setMealImageError] = useState("");
     const [descriptionError, setDescriptionError] = useState("");
@@ -36,7 +41,11 @@ const CreateMeal = ({ navigation }) => {
             const access_token = await AsyncStorage.getItem("access_token");
 
             const data = await GetAllProductService(access_token)
-            setProducts(data.value);
+            const filterData = data.value.map((product) => ({
+                id: product.ID,
+                name: product.Name
+            }))
+            setProducts(filterData);
         } catch (error) {
             console.log('Error:', error);
         }
@@ -48,12 +57,31 @@ const CreateMeal = ({ navigation }) => {
         }
     }, [isFocused]);
 
+    const toggleModal = () => {
+        setIsModalVisible(!isModalVisible);
+    };
+
+    const confirmSelection = () => {
+        setIsModalVisible(false);
+        console.log(selectedProducts);
+    };
+
     const handleToggleProduct = (product) => {
-        if (selectedProducts.some((selectedProducts) => selectedProducts.ID === product.ID)) {
-            setSelectedProducts(selectedProducts.filter((selectedProduct) => selectedProduct.ID !== product.ID));
+        if (selectedProducts.some((selectedProduct) => selectedProduct.id === product.id)) {
+            setSelectedProducts(selectedProducts.filter((selectedProduct) => selectedProduct.id !== product.id));
         } else {
             setSelectedProducts([...selectedProducts, product]);
         }
+    };
+
+    const handleAddProduct = () => {
+        setSelectedProducts([...selectedProducts, null]);
+    };
+
+    const handleProductChange = (productId, index) => {
+        const updatedSelectedProducts = [...selectedProducts];
+        updatedSelectedProducts[index] = { id: productId };
+        setSelectedProducts(updatedSelectedProducts);
     };
 
     const validateTitle = (inputTitle) => {
@@ -188,18 +216,87 @@ const CreateMeal = ({ navigation }) => {
                     </View>
                     {titleError ? (<Text style={styles.errorText}>{titleError}</Text>) : null}
 
-                    <View style={styles.inputContainer}>
-                        <Text>Select Products:</Text>
-                        {products.map((product) => (
-                            <View key={product.ID}>
-                                <CheckBox
-                                    value={selectedProducts.some((selectedProduct) => selectedProduct.ID === product.ID)}
-                                    onValueChange={() => handleToggleProduct(product)}
-                                />
-                                <Text>{product.Name}</Text>
-                            </View>
-                        ))}
-                        <Text>Selected Product: {selectedProducts.map((selectedProduct) => selectedProduct.Name).join(', ')}</Text>
+                    <View style={styles.inputPicker}>
+                        <Modal>
+                            <ScrollView>
+                                <View style={styles.modalContent}>
+                                    <Text style={styles.modalTitle}>Select Products</Text>
+                                    {products.map((product) => (
+                                        <View key={product.id} style={{ flexDirection: 'row' }}>
+                                            <CheckBox
+                                                value={selectedProducts.some((selectedProduct) => selectedProduct.id === product.id)}
+                                                onValueChange={() => handleToggleProduct(product)}
+                                            />
+                                            <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10, marginLeft: 10 }}>{product.name}</Text>
+                                        </View>
+                                    ))}
+                                    <View style={{ flexDirection: 'row-reverse' }}>
+                                        <TouchableOpacity onPress={confirmSelection} style={styles.confirmButton}>
+                                            <Text style={styles.confirmButtonText}>Confirm</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </ScrollView>
+                        </Modal>
+
+                        <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+                            <ScrollView>
+                                <View style={styles.modalContent}>
+                                    <Text style={styles.modalTitle}>Choose Products</Text>
+                                    <View>
+                                        <View style={{ borderWidth: 1, borderRadius: 15, paddingHorizontal: 20, paddingVertical: 10 }}>
+                                            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>product</Text>
+                                            {selectedProducts.map((selected, index) => {
+                                                <View key={index}>
+                                                    <Picker selectedValue={selected.id} onValueChange={() => { }}>
+                                                        <Picker.Item
+
+                                                            style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
+                                                            label="Select product"
+                                                            value=""
+                                                        />
+                                                        {products.map((product) => (
+                                                            <Picker.Item
+                                                                key={product.id}
+                                                                style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
+                                                                label={product.name}
+                                                                value={product.id}
+                                                            />
+                                                        ))}
+                                                    </Picker>
+                                                </View>
+                                            })}
+                                        </View>
+                                        <View>
+                                            <TouchableOpacity onPress={handleAddProduct}>
+                                                <FontAwesome name="plus-circle" size={24} color="#007BFF" />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <View style={{ flexDirection: 'row-reverse' }}>
+                                        <TouchableOpacity onPress={confirmSelection} style={styles.confirmButton}>
+                                            <Text style={styles.confirmButtonText}>Confirm</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </ScrollView>
+                        </Modal>
+
+
+
+                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Selected Product: {selectedProducts.map((selectedProduct) => selectedProduct.name).join(', ')}</Text>
+                        <TouchableOpacity onPress={toggleModal}>
+                            <Text style={{
+                                backgroundColor: '#007BFF',
+                                padding: 10,
+                                borderRadius: 5,
+                                alignItems: 'center',
+                                color: 'white',
+                                fontWeight: 'bold',
+                                width: '40%',
+                                textAlign: 'center'
+                            }}>Select Product</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={{ marginBottom: 20 }}>
@@ -280,6 +377,27 @@ const styles = StyleSheet.create({
         backgroundColor: "#CAF0F8",
         paddingVertical: 50,
     },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+    },
+    modalTitle: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    confirmButton: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        marginTop: 20,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    confirmButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
     editIconContainer: {
         position: "absolute",
         bottom: 5,
@@ -293,6 +411,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderBottom: "grey",
         borderBottomWidth: 1,
+        paddingLeft: 10,
+        paddingBottom: 5,
+        marginBottom: 20,
+    },
+    inputPicker: {
+        flexDirection: "column",
         paddingLeft: 10,
         paddingBottom: 5,
         marginBottom: 20,
