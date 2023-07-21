@@ -33,6 +33,8 @@ import CreateMeal from "./src/screens/StaffScreens/CreateMeal"
 import ProductsScreen from "./src/screens/StaffScreens/ProductsScreen";
 import ListMealsScreen from "./src/screens/StaffScreens/ListMealsScreen";
 import ManageStaff from "./src/screens/AdminScreens/ManageStaff";
+import EditProduct from "./src/screens/StaffScreens/EditProduct";
+import CreateStaff from "./src/screens/AdminScreens/CreateStaff";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -378,6 +380,9 @@ export default function App() {
         <Stack.Screen name="OrderDetailStaff" component={OrderDetailStaff} />
         <Stack.Screen name="DepositMoney" component={DepositMoney} />
         <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="CreateStaff" component={CreateStaff} />
+      <Stack.Screen name="CreateProduct" component={CreateProduct} />
+      <Stack.Screen name="EditProduct" component={EditProduct} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       </Stack.Navigator>
     </NavigationContainer>

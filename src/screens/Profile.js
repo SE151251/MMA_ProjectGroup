@@ -79,7 +79,7 @@ const Profile = ({ navigation }) => {
 
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {profileData !== null ?
+
           <View style={styles.container}>
             <View style={{ alignItems: "center" }}>
               <Image source={{ uri: profileData.Avatar }} style={styles.image} />
@@ -179,11 +179,6 @@ const Profile = ({ navigation }) => {
 
 
           </View>
-          :
-          <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Profile not found</Text>
-          </View>
-        }
       </ScrollView>
     </KeyboardAvoidingView>
   );

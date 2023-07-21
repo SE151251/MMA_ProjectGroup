@@ -1,5 +1,6 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
+import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, Card } from "react-native-paper";
@@ -83,13 +84,15 @@ const ManageStaff = ({ navigation }) => {
           textAlign: "center",
           fontSize: 24,
           fontWeight: 700,
-          marginBottom: 30,
           marginTop: 30,
           color: "#03045E",
         }}
       >
         Manage Staffs
       </Text>
+      <TouchableOpacity style={{paddingHorizontal: 20, paddingVertical: 10, flexDirection: "row-reverse"}} onPress={() => navigation.navigate("CreateStaff")}>
+          <FontAwesome name="plus-circle" size={40} color="#007BFF" />
+        </TouchableOpacity>
       {data && (
         <>
           <FlatList
@@ -118,7 +121,7 @@ const ManageStaff = ({ navigation }) => {
                     Gender: {item.Gender === true ? "Male" : "Female"}
                   </Text>
                   <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>
-                    Birt Date:{" "}
+                    Birth Date:{" "}
                     {`${format(new Date(item.BirthDate), "dd/MM/yyyy")}`}
                   </Text>
                   <Text style={{ fontSize: 18, fontWeight: 500, marginBottom: 5 }}>
