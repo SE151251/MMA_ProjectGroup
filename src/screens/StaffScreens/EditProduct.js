@@ -192,18 +192,19 @@ const EditProduct = ({ route, navigation }) => {
       isOriginalPriceValid 
     ) {
       const access_token = await AsyncStorage.getItem("access_token");
-      const result = await UpdateProductService(id, name, description, originalPrice, price, total, status, expiredDate, access_token)
+      const result = await UpdateProductService(id, name, description, originalPrice, price, total, status, expiredDate, access_token)  
       if (!result) {
         Toast.show({
           type: "success",
           text1: "Message",
           text2: `Update ${name} Success`,
         });
+        navigation.goBack()
       }  else {
         Toast.show({
           type: "error",
           text1: "Message",
-          text2: `Something went wrong.`,
+          text2: result.Message[0].DescriptionError[0],
         });
       }
     }
@@ -314,12 +315,12 @@ const EditProduct = ({ route, navigation }) => {
               <Picker.Item
                 style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
                 label="Active"
-                value="1"
+                value={1}
               />
               <Picker.Item
                 style={{ fontSize: 20, fontWeight: "bold", borderWidth: 1 }}
                 label="Inactive"
-                value="0"
+                value={2}
               />
             </Picker>
           </View>

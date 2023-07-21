@@ -1,13 +1,10 @@
-import { View, Text, FlatList, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Button, Card } from "react-native-paper";
-import { format } from "date-fns";
 import { useIsFocused } from "@react-navigation/native";
-import { Dimensions } from "react-native";
-import { Alert } from "react-native";
-import  Toast  from "react-native-toast-message";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, Text, View } from "react-native";
+import { Button, Card } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 const ListMealsScreen = ({ navigation }) => {
   const [data, setData] = useState();
@@ -61,18 +58,18 @@ const ListMealsScreen = ({ navigation }) => {
         }
       );
       // console.log(res.data);
-      loadDashboardAPI();
+      loadProductsAPI()
       Toast.show({
         type: "success",
         text1: "Message",
-        text2: "Delete product successfully",
+        text2: "Delete meal successfully",
       });
     } catch (error) {
       console.log(error.response.data);
       Toast.show({
         type: "error",
         text1: "Message",
-        text2: "Delete product failed!",
+        text2: "Delete meal failed!",
       });
     }
   };

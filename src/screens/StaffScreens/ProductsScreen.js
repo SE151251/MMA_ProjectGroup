@@ -5,7 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button, Card } from "react-native-paper";
 import { format } from "date-fns";
 import { useIsFocused } from "@react-navigation/native";
-import { Dimensions } from "react-native";
 import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 import { FontAwesome } from "@expo/vector-icons";
@@ -33,7 +32,7 @@ const ProductScreen = ({ navigation }) => {
       loadProductsAPI();
     }
   }, [isFocused]);
-  const handleDeleteUser = async (id) => {
+  const handleDeleteProduct = async (id) => {
     Alert.alert("Are you sure?", "You really want to delete this Product?", [
       {
         text: "No",
@@ -43,13 +42,14 @@ const ProductScreen = ({ navigation }) => {
       {
         text: "Yes",
         onPress: () => {
-          deleteUser(id);
+          deleteProduct(id);
         },
       },
     ]);
   };
 
-  const deleteUser = async (id) => {
+  const deleteProduct = async (id) => {
+    console.log("id: ", id);
     try {
       const access_token = await AsyncStorage.getItem("access_token");
       const res = await axios.delete(
@@ -60,15 +60,15 @@ const ProductScreen = ({ navigation }) => {
           },
         }
       );
-
-      loadDashboardAPI();
+      console.log("success delete");
+      loadProductsAPI();
       Toast.show({
         type: "success",
         text1: "Message",
         text2: "Delete product successfully",
       });
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
       Toast.show({
         type: "error",
         text1: "Message",
@@ -78,7 +78,7 @@ const ProductScreen = ({ navigation }) => {
   };
 
   const handleEditProduct = (id, name, description, originalPrice, price, total, status, expiredDate, productImage) => {
-    //console.log(id, name, description, originalPrice, price, total, status, expiredDate, productImage)
+  console.log("status: ", status)
     let tempDate = new Date(expiredDate);
     let formattedDate =
       tempDate.getDate() +
@@ -171,7 +171,7 @@ const ProductScreen = ({ navigation }) => {
                       <Button
                         icon="trash-can-outline"
                         mode="contained"
-                        onPress={() => handleDeleteUser(item.ID)}
+                        onPress={() => handleDeleteProduct(item.ID)}
                         style={{ backgroundColor: "#ef476f" }}
                       >
                         Delete

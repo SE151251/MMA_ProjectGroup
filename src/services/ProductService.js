@@ -37,6 +37,7 @@ const CreateProductService = async (name, description, expiredDate, total, price
 
 const UpdateProductService = async (id, name, description, originalPrice, price, total, status, expiredDate, token) => {
   try {
+    console.log("date",expiredDate);
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("Description", description);
