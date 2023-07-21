@@ -31,7 +31,7 @@ const DashboardStaff = ({ navigation }) => {
   }, [isFocused]);
   return (
     <View style={{ backgroundColor:"#CAF0F8"}}>
-      <Text
+      {/* <Text
         style={{
           textAlign: "center",
           fontSize: 28,
@@ -42,12 +42,12 @@ const DashboardStaff = ({ navigation }) => {
         }}
       >
         
-      </Text>
+      </Text> */}
       {data && (
         <FlatList
           data={data.reverse().slice(0, 20)}
           keyExtractor={(item) => item.ID}
-          style={{marginBottom: 100}}
+          style={{marginBottom: 10, marginTop: 20}}
           renderItem={({ item }) => (
             <Card
               style={{

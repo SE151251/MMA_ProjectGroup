@@ -30,6 +30,10 @@ import EditProfile from "./src/screens/EditProfile";
 import Login from "./src/screens/LoginScreen";
 import CreateProduct from "./src/screens/StaffScreens/CreateProduct"
 import CreateMeal from "./src/screens/StaffScreens/CreateMeal"
+import ProductsScreen from "./src/screens/StaffScreens/ProductsScreen";
+import ListMealsScreen from "./src/screens/StaffScreens/ListMealsScreen";
+import ManageStaff from "./src/screens/AdminScreens/ManageStaff";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -195,7 +199,35 @@ const StaffDrawerNavigator = () => {
           title: "List Orders",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
-              name="ios-home-outline"
+              name="reorder-three"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+        <Drawer.Screen
+        name="TabProductStaff"
+        component={ProductsScreen}
+        options={{
+          title: "List Products",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="cube-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+        <Drawer.Screen
+        name="TabMealstStaff"
+        component={ListMealsScreen}
+        options={{
+          title: "List Meals",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="reader-outline"
               size={focused ? 20 : 20}
               color={color}
             />
@@ -281,7 +313,21 @@ const AdminDrawerNavigator = () => {
           title: "Manage Users",
           drawerIcon: ({ color, focused }) => (
             <Ionicons
-              name="ios-home-outline"
+              name="person-circle-outline"
+              size={focused ? 20 : 20}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="ManageStaff"
+        component={ManageStaff}
+        options={{
+          title: "Manage Staff",
+          drawerIcon: ({ color, focused }) => (
+            <Ionicons
+              name="ios-person-outline"
               size={focused ? 20 : 20}
               color={color}
             />
